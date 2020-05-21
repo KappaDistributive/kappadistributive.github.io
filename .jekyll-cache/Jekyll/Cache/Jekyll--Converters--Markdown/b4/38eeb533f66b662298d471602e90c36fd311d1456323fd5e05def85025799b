@@ -1,4 +1,4 @@
-I"�2<p>Life is pretty crazy right now. Finishing a PhD, changing from set theory to applied data science, forming connections to other data scientists, learning as much about machine learning (both theory and practice) as I possibly can, finding a new apartment and preparing to move, dealing with German bureaucracy… This doesn’t leave a lot of spare time. Truth be told, it doesn’t leave any.</p>
+I"�2<p>Life is pretty crazy right now. Finishing a PhD, changing from set theory to applied data science, forming connections to other data scientists, learning as much about machine learning (both theory and practice) as I possibly can, finding a new apartment and preparing to move, dealing with German bureaucracy… This doesn’t leave a lot of spare time. Truth be told, it doesn’t leave any.</p>
 
 <p>I’m not complaining – the last couple of months have been immensely enjoyable (well, except for the bureaucracy part). But being pressed for time also made me decide to postpone my planned blog series on the importance of probability distributions in machine learning as I’m currently lacking the spare mental capacity to do this rather broad, open-ended topic justice.</p>
 
@@ -26,7 +26,7 @@
 
 <h1 id="hello-im-tensorflow">Hello, I’m TensorFlow.</h1>
 
-<p>In an effort to invite as many people as possible to share my excitement about TF2 and join the discussion, I’d like to end this post with a very simple regression task completed in TensorFlow 2. We aim to approximate the function <script type="math/tex">\sin \colon [0, 2 \pi] \to [-1, 1], x \mapsto \sin (x)</script> with a neural network. You can find the <a href="https://colab.research.google.com/drive/1b1Lil2bfpT--axFKgd2z-2LeIkCv0z5Y">interactive Jupyter notebook over at Google Colaboratory</a> or just continue reading for a slighly more verbose version.</p>
+<p>In an effort to invite as many people as possible to share my excitement about TF2 and join the discussion, I’d like to end this post with a very simple regression task completed in TensorFlow 2. We aim to approximate the function \(\sin \colon [0, 2 \pi] \to [-1, 1], x \mapsto \sin (x)\) with a neural network. You can find the <a href="https://colab.research.google.com/drive/1b1Lil2bfpT--axFKgd2z-2LeIkCv0z5Y">interactive Jupyter notebook over at Google Colaboratory</a> or just continue reading for a slighly more verbose version.</p>
 
 <p>The first part of any machine learning project is to load our dependencies.</p>
 
@@ -37,15 +37,15 @@
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 </code></pre></div></div>
 
-<p>Next, we load our data. In this case, to keep things as simple as possible, we will simply create the sine function on the interval <script type="math/tex">[0, 2 \pi]</script> and approximate it.</p>
+<p>Next, we load our data. In this case, to keep things as simple as possible, we will simply create the sine function on the interval \([0, 2 \pi]\) and approximate it.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">10000</span><span class="p">)</span>
-<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="p">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">10000</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </code></pre></div></div>
 
 <p>When possible, it’s always a good idea to look at a visual representation of your data. This serves as a baseline sanity check to ensure there is no immediately obvious problem.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
 </code></pre></div></div>
 
 <figure style="align: center">
@@ -55,23 +55,23 @@
 <p>That looks okay, so let’s continue by building our neural network. The integration of Keras makes this very simple:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Build a neural network with 2 hidden layers, each of size 128
-</span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
-    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">),</span>
-    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'linear'</span><span class="p">)</span>
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">models</span><span class="p">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">),</span>
+    <span class="n">tf</span><span class="p">.</span><span class="n">keras</span><span class="p">.</span><span class="n">layers</span><span class="p">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'linear'</span><span class="p">)</span>
 <span class="p">])</span>
 </code></pre></div></div>
 
 <p>Compiling the model is similarly trivial.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s">'adam'</span><span class="p">,</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s">'adam'</span><span class="p">,</span>
               <span class="n">loss</span><span class="o">=</span><span class="s">'mean_squared_error'</span><span class="p">,</span>
               <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">])</span>
 </code></pre></div></div>
 
 <p>Finally, let’s fit the neural network to our training data.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </code></pre></div></div>
 
 <blockquote>
@@ -95,18 +95,18 @@
   <p>&lt;tensorflow.python.keras.callbacks.History at 0x7fa30305c5f8&gt;</p>
 </blockquote>
 
-<p>That’s it! We’ve created and successfully trained a neural network to approximate the sine function on <script type="math/tex">[0, 2 \pi]</script> and the training output seems encouraging. All that’s left to do is to visualize how well we’ve done:</p>
+<p>That’s it! We’ve created and successfully trained a neural network to approximate the sine function on \([0, 2 \pi]\) and the training output seems encouraging. All that’s left to do is to visualize how well we’ve done:</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'model prediction'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">pred</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'model prediction'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">()</span>
 </code></pre></div></div>
 
 <figure style="align: center">
   <img src="/images/diagrams/since_prediction.png" style="max-width: 400px;" alt="prediction of the sine function" />
 </figure>
 
-<p>Not bad, not bad at all! The interval <script type="math/tex">[5,2 \pi]</script> needs some work (and I encourage you to think about why our model performed so much worse on that section) but other than that, I’d say that our model does know how to create a sine wave.</p>
+<p>Not bad, not bad at all! The interval \([5,2 \pi]\) needs some work (and I encourage you to think about why our model performed so much worse on that section) but other than that, I’d say that our model does know how to create a sine wave.</p>
 
 <p>I’ve decided to give a few hints as to why our model performs worse on the tail end of our data set: Consider the following animation of the learning process</p>
 

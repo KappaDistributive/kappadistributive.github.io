@@ -1,4 +1,4 @@
-I"�)<h1 id="fragile-knowledge">Fragile Knowledge</h1>
+I"�(<h1 id="fragile-knowledge">Fragile Knowledge</h1>
 
 <blockquote>
   <p>I don’t know what’s the matter with people: they don’t learn by
@@ -43,7 +43,7 @@ influence its source neuron has in the overall network and</p>
   </li>
   <li>
     <p>An activation function, attached to each neuron, that determines the
-‘shape’ of this neuron’s discharge pattern. <sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+‘shape’ of this neuron’s discharge pattern. <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup></p>
   </li>
 </ol>
 
@@ -95,8 +95,8 @@ toward assembling your internal database.</p>
 
 <p>“Is there anything I already know about that could easily be realized
 as a neural network? Actually, yes: Linear functions are of the form
-<script type="math/tex">f(x) = a \cdot x + b</script> and they are represented by the following
-neural network: <sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></p>
+\(f(x) = a \cdot x + b\) and they are represented by the following
+neural network: <sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote">2</a></sup></p>
 
 <figure style="align: center">
   <img src="/images/diagrams/nn_linear_function.png" style="max-width: 400px;" alt="a neural network that represents a linear function" />
@@ -110,21 +110,20 @@ must be able to capture logic gates, right? Right!</p>
   <img src="/images/diagrams/nn_not.png" style="max-width: 400px;" alt="a neural network that represents logical negation" />
 </figure>
 
-<p>Here <script type="math/tex">\chi = \chi_{[0, \infty)}</script> is the activation function of
-<script type="math/tex">a_1</script> and all you need to know is that <script type="math/tex">\chi(z) = 0</script> for all <script type="math/tex">% <![CDATA[
-z
-< 0 %]]></script> and <script type="math/tex">\chi(z) = 1</script> for all <script type="math/tex">z \ge 0</script>. So, if we set <script type="math/tex">x_1 =
-0</script>, we get that <script type="math/tex">a_1 = \chi(w_0 \cdot x_0 + w_1 \cdot x_1) =
-\chi(0 \cdot 1 + (-1) \cdot 0) = \chi(0) = 0</script>. On the other hand, if we let
-<script type="math/tex">x_1 = 1</script>, we get that <script type="math/tex">a_1 = \chi(0 \cdot 1 + (-1) \cdot 1) = \chi(-1) =
-0</script>. So this neural network does indeed represent <script type="math/tex">\mathrm{NOT}(x_1)</script>!”</p>
+<p>Here \(\chi = \chi_{[0, \infty)}\) is the activation function of
+\(a_1\) and all you need to know is that \(\chi(z) = 0\) for all \(z
+&lt; 0\) and \(\chi(z) = 1\) for all \(z \ge 0\). So, if we set \(x_1 =
+0\), we get that \(a_1 = \chi(w_0 \cdot x_0 + w_1 \cdot x_1) =
+\chi(0 \cdot 1 + (-1) \cdot 0) = \chi(0) = 0\). On the other hand, if we let
+\(x_1 = 1\), we get that \(a_1 = \chi(0 \cdot 1 + (-1) \cdot 1) = \chi(-1) =
+0\). So this neural network does indeed represent \(\mathrm{NOT}(x_1)\)!”</p>
 
 <p>At this point, you might want to cook up a few more examples and in an
 earlier tweet I demonstrated how to represent other basic logic gates
 (AND, OR, NOR, XOR, XNOR) as neural networks as well. I’d encourage
 you to try it yourself first and then <a href="https://twitter.com/mesken_stefan/status/1138694458470539264">hop over to
 Twitter</a>
-and compare your results with mine. <sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup></p>
+and compare your results with mine. <sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote">3</a></sup></p>
 
 <p>Once you’ve done that, you may notice what I’ve noticed: Not only can
 neural networks represent logic gates. <em>Neural networks are nothing
@@ -132,7 +131,7 @@ more than logic gates</em>, with a few minor adjustments:</p>
 
 <ol>
   <li>
-    <p>Inputs are allowed to take on any real number as value, not just <script type="math/tex">0</script> and <script type="math/tex">1</script>,</p>
+    <p>Inputs are allowed to take on any real number as value, not just \(0\) and \(1\),</p>
   </li>
   <li>
     <p>We add a restriction that a node’s value is computed by a weighted,
@@ -140,7 +139,7 @@ linear combination of the values to its left followed by an
 activation function and</p>
   </li>
   <li>
-    <p>We add an activation functions to our nodes. <sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup>”</p>
+    <p>We add an activation functions to our nodes. <sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote">4</a></sup>”</p>
   </li>
 </ol>
 
@@ -173,32 +172,32 @@ but, ultimately, also allow you to solve problems in surprising,
 efficient and truly ingenious ways. Being able to do that is, in a
 nutshell, the mark of a true expert.</p>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
+    <li id="fn:1" role="doc-endnote">
       <p>I think it’s helpful to point out that this is one of the ways
 that artificial neural networks differ from biological
 ones. Biological neurons either fire or they don’t – so, in a
 way, the only activation function they’re allowed to have is the
 <a href="https://en.wikipedia.org/wiki/Indicator_function">characteristic
 function</a>
-<script type="math/tex">\chi_{(-\infty, a]}</script> for some number <script type="math/tex">a</script>. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+\(\chi_{(-\infty, a]}\) for some number \(a\). <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2">
+    <li id="fn:2" role="doc-endnote">
       <p>This follows Andrew Ng’s handy convention that any neuron/weight with
-a <script type="math/tex">0</script> as subscript represents a bias component – independent of the input. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+a \(0\) as subscript represents a bias component – independent of the input. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:3">
-      <p>In case you don’t want to use Twitter, you can find my solution <a href="http://localhost:4000/images/diagrams/nn_logic_gates.png">here</a> <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:3" role="doc-endnote">
+      <p>In case you don’t want to use Twitter, you can find my solution <a href="http://localhost:4000/images/diagrams/nn_logic_gates.png">here</a> <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:4">
+    <li id="fn:4" role="doc-endnote">
       <p>This point, in theory, is incredibly powerful. In fact, it’s too
 powerful. Since neural networks are intended to approximate some
-function <script type="math/tex">f</script> to begin with, we could always achieve this by
-taking <script type="math/tex">f</script> as our activation function. In practice, however,
-<script type="math/tex">f</script> is unknown, we only allow activation functions from a very
+function \(f\) to begin with, we could always achieve this by
+taking \(f\) as our activation function. In practice, however,
+\(f\) is unknown, we only allow activation functions from a very
 restrictive, simple set of functions and their specific choice, in
-many cases, turns out to be surprisingly irrelevant. <a href="#fnref:4" class="reversefootnote">&#8617;</a></p>
+many cases, turns out to be surprisingly irrelevant. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

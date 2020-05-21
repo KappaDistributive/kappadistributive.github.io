@@ -353,7 +353,7 @@
   <li>a scoring system to judge the entries by.</li>
 </ul>
 
-<p>For logistics and visibility reasons, I suggest posting any such challenge on https://codegolf.stackexchange.com/ under the tag ‘machine-learning’, once that tag exists. <sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+<p>For logistics and visibility reasons, I suggest posting any such challenge on https://codegolf.stackexchange.com/ under the tag ‘machine-learning’, once that tag exists. <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup></p>
 
 <p>Challengers then design and train their models according to the stated rules. Once their model meets the mandatory performance goal, they may submit their model (in a suitable form) and all code necessary to verify their results. As per usual in Code Golf, peers will then vote/comment on their and other submissions, suggest improvements and challengers may update their entries at any point and are free to enter multiple models.</p>
 
@@ -367,15 +367,15 @@
 
 <p>To kick things off, I’ll propose the first, very simple challenge.</p>
 
-<p>In the language and framework of your choice, design and train a neural network that, given <script type="math/tex">(x_1, x_2)</script> calculates their product <script type="math/tex">x_1 \cdot x_2</script> for all integers <script type="math/tex">x_1, x_2</script> between (and including) <script type="math/tex">-10</script> and <script type="math/tex">10</script>.</p>
+<p>In the language and framework of your choice, design and train a neural network that, given \((x_1, x_2)\) calculates their product \(x_1 \cdot x_2\) for all integers \(x_1, x_2\) between (and including) \(-10\) and \(10\).</p>
 
 <h2 id="performance-goal">Performance Goal</h2>
 
-<p>To qualify, your model may not deviate by more than <script type="math/tex">0.5</script> from the correct result on any of those entries.</p>
+<p>To qualify, your model may not deviate by more than \(0.5\) from the correct result on any of those entries.</p>
 
 <h2 id="bonus-goal">Bonus Goal</h2>
 
-<p>Achieve a maximal deviation (measured by the Euclidean norm) of <script type="math/tex">0.5</script> for the multiplication of all complex numbers with integer components <script type="math/tex">c_1 = (a_1, b_1) = a_1 + b_1 \cdot i, c_2 = (a_2, b_2) = a_2 + b_2 \cdot i</script> of Euclidean norm <script type="math/tex">\le 10</script>.</p>
+<p>Achieve a maximal deviation (measured by the Euclidean norm) of \(0.5\) for the multiplication of all complex numbers with integer components \(c_1 = (a_1, b_1) = a_1 + b_1 \cdot i, c_2 = (a_2, b_2) = a_2 + b_2 \cdot i\) of Euclidean norm \(\le 10\).</p>
 
 <h2 id="rules">Rules</h2>
 
@@ -384,22 +384,22 @@
 <ul>
   <li>must be a ‘traditional’ neural network (a node’s value is calculated as a weighted linear combination of some of the nodes in a previous layer followed by an activation function),</li>
   <li>may only use activation functions listed as such <a href="https://keras.io/activations/">in Keras</a>,</li>
-  <li>must take <script type="math/tex">(x_1, x_2)</script> either as a tuple/vector/list/… of integers or floats as its only input,</li>
-  <li>return the answer <script type="math/tex">\hat{y}</script> as an integer, float (or a suitable container, e.g. a vector or list, that contains this answer).</li>
+  <li>must take \((x_1, x_2)\) either as a tuple/vector/list/… of integers or floats as its only input,</li>
+  <li>return the answer \(\hat{y}\) as an integer, float (or a suitable container, e.g. a vector or list, that contains this answer).</li>
 </ul>
 
 <h2 id="scoring">Scoring</h2>
 
 <p>The neural network with the <em>smallest number of weights</em> (including bias weights) wins.</p>
 
-<p>My best attempt so far uses 43 weights and achieves a maximal deviation of <script type="math/tex">0.04786</script> as witnessed by <script type="math/tex">8 \cdot -8 \mapsto -63.521423</script>. I’m sure there’s plenty of room for improvements and am looking forward to your entries!</p>
+<p>My best attempt so far uses 43 weights and achieves a maximal deviation of \(0.04786\) as witnessed by \(8 \cdot -8 \mapsto -63.521423\). I’m sure there’s plenty of room for improvements and am looking forward to your entries!</p>
 
 <p>If you want to participate or check out my submission, hop over to <a href="https://codegolf.stackexchange.com/questions/187562/machine-learning-golf-multiplication">this challenge on Code Golf Stackexchange</a>.</p>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
-      <p>This, of course, doesn’t mean that ML Golf is limited to this platform – feel free to post your challenges and submissions wherever you want. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:1" role="doc-endnote">
+      <p>This, of course, doesn’t mean that ML Golf is limited to this platform – feel free to post your challenges and submissions wherever you want. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>
@@ -483,7 +483,8 @@
 ">Previous</a>
     
     
-      <a href="#" class="pagination--pager disabled">Next</a>
+      <a href="/data-science/python-tricks/" class="pagination--pager" title="Python Tricks For Data Scientist
+">Next</a>
     
   </nav>
 
@@ -497,6 +498,64 @@
     <div class="page__related">
       <h4 class="page__related-title">You may also enjoy</h4>
       <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/data-science/python-tricks.md/" rel="permalink">Python Tricks For Data Scientist
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Recently, I’ve found myself gravitating toward a small set of ‘tricks’ in
+Python over and over again and thought it would be fun to share and discuss
+a few o...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/data-science/python-tricks/" rel="permalink">Python Tricks For Data Scientist
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Recently, I’ve found myself gravitating toward a small set of ‘tricks’ in
+Python over and over again and thought it would be fun to share and discuss
+a few o...</p>
+  </article>
+</div>
+
         
           
 
@@ -550,60 +609,6 @@
     
     <p class="archive__item-excerpt" itemprop="description">Fragile Knowledge
 </p>
-  </article>
-</div>
-
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="/machine%20learning/tensorflow-without-tears/" rel="permalink">TensorFlow Without Tears
-</a>
-      
-    </h2>
-    
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  5 minute read
-</p>
-    
-    <p class="archive__item-excerpt" itemprop="description">Life is pretty crazy right now. Finishing a PhD, changing from set theory to applied data science, forming connections to other data scientists, learning as ...</p>
-  </article>
-</div>
-
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="/machine%20learning/how-to-beat-kaggle-(the-easy-way)/" rel="permalink">How To Beat Kaggle (the Easy Way)
-</a>
-      
-    </h2>
-    
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  6 minute read
-</p>
-    
-    <p class="archive__item-excerpt" itemprop="description">A few nights ago, I found myself tinkering with the Titanic data set on Kaggle and couldn’t help but notice the number of people with a perfect score – many ...</p>
   </article>
 </div>
 

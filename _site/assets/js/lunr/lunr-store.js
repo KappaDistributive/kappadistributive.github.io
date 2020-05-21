@@ -23,4 +23,14 @@ var store = [{
         "excerpt":"For the last 5 years or so, I’ve been lurking on the Code Golf Stackexchange. Code Golf is the art of solving a given problem, under specified rules, with as little written code as possible. And if you have never encountered ‘golfed code’, I highly recommend taking a look. Not...","categories": ["Data-Science"],
         "tags": ["machine learning","neural networks","ml golf"],
         "url": "http://localhost:4000/data-science/machine-learning-golf/",
+        "teaser":null},{
+        "title": "Python Tricks For Data Scientist",
+        "excerpt":"Recently, I’ve found myself gravitating toward a small set of ‘tricks’ in Python over and over again and thought it would be fun to share and discuss a few of them with other data scientists. So here they go: Cached Data Loader Jupyter notebooks are great for exploratory data analysis...","categories": ["Data-Science"],
+        "tags": ["data science","python"],
+        "url": "http://localhost:4000/data-science/python-tricks/",
+        "teaser":null},{
+        "title": "Python Tricks For Data Scientist",
+        "excerpt":"Recently, I've found myself gravitating toward a small set of 'tricks' in Python over and over again and thought it would be fun to share and discuss a few of them with other data scientists. So here they go: ## Cached Data Loader Jupyter notebooks are great for exploratory data...","categories": ["Data-Science"],
+        "tags": ["data science","python"],
+        "url": "http://localhost:4000/data-science/python-tricks.md/",
         "teaser":null}]

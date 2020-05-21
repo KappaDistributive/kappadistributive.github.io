@@ -1,4 +1,271 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-04-09T18:41:28+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Stefan Mesken</title><subtitle>Data Science</subtitle><author><name>Stefan Mesken</name></author><entry><title type="html">Machine Learning Golf</title><link href="http://localhost:4000/data-science/machine-learning-golf/" rel="alternate" type="text/html" title="Machine Learning Golf" /><published>2019-07-01T00:00:00+02:00</published><updated>2019-07-01T00:00:00+02:00</updated><id>http://localhost:4000/data-science/machine-learning-golf</id><content type="html" xml:base="http://localhost:4000/data-science/machine-learning-golf/">&lt;p&gt;For the last 5 years or so, I’ve been lurking on the &lt;a href=&quot;https://codegolf.stackexchange.com/&quot;&gt;Code Golf Stackexchange&lt;/a&gt;. Code Golf is the art of solving a given problem, under specified rules, with as little written code as possible. And if you have never encountered ‘golfed code’, I highly recommend taking a look. Not sure about other people but to my nerdy brain, reading the ingenious approaches these incredibly talented and passionate coders come up with, is pure entertainment gold!&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.0.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-05-21T18:22:19+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Stefan Mesken</title><subtitle>Data Science</subtitle><author><name>Stefan Mesken</name></author><entry><title type="html">Python Tricks For Data Scientist</title><link href="http://localhost:4000/data-science/python-tricks/" rel="alternate" type="text/html" title="Python Tricks For Data Scientist" /><published>2020-05-21T00:00:00+02:00</published><updated>2020-05-21T00:00:00+02:00</updated><id>http://localhost:4000/data-science/python-tricks</id><content type="html" xml:base="http://localhost:4000/data-science/python-tricks/">&lt;p&gt;Recently, I’ve found myself gravitating toward a small set of ‘tricks’ in
+Python over and over again and thought it would be fun to share and discuss
+a few of them with other data scientists. So here they go:&lt;/p&gt;
+
+&lt;h2 id=&quot;cached-data-loader&quot;&gt;Cached Data Loader&lt;/h2&gt;
+
+&lt;p&gt;Jupyter notebooks are great for exploratory data analysis for many reasons.
+One major of which is their persistent state between code execution: You
+can load your data once and then iteratively perform all sorts of
+modifications / visualizations without having to reload your data over the
+network.&lt;/p&gt;
+
+&lt;p&gt;Sometimes, however, that’s still not enough: If your network connection is
+slow or the dataset you’re trying to analyze particular large or you need
+to restart your kernel frequently for whatever reason, data loading can
+become a real pain.&lt;/p&gt;
+
+&lt;p&gt;To this, I’ve found myself using cached data loading more and more frequently
+in recent times. Here’s how this may look like in practice:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;_cached_data_loader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;connector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StorageConnector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;query_parameters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;QueryParameter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cache_location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;force_update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;bool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pandas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;force_update&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isfile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cache_location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;connector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;query_to_dataframe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;query_parameters&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_pickle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cache_location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;from_pickle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cache_location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
+    
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;load_marketing_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;query_parameters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;QueryParameter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[],&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;cache_location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;cache/marketing.pkl&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;force_update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;bool&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pandas&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;connector&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;...&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_cached_data_loader&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;connector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;query_parameters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;cache_location&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;force_update&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;After downloading marketing data over the network, any subsequent call to this
+function will load a cached version from disk instead. However, by setting
+&lt;code class=&quot;highlighter-rouge&quot;&gt;force_update = True&lt;/code&gt; you can still refresh your (cached) data at any time.&lt;/p&gt;
+
+&lt;p&gt;This can probably be implemented much more elegantly as a decorator. And if you
+do, I’d love to hear about it!&lt;/p&gt;
+
+&lt;h2 id=&quot;debugging-with-upturn&quot;&gt;Debugging with Upturn&lt;/h2&gt;
+
+&lt;p&gt;Since many bugs in data science code only occur on certain input data, debugging
+can be challenging and simple debugging tools often seem too restrictive,
+whereas more feature complete debugging tools can be intimidating. What I’ve found
+to be useful at times is to abuse IPython as a debugger.
+Say, for instance, that a certain pre-processing step in my data pipeline yields
+unexpected results. Instead of setting a breakpoint and attempting to understand
+what’s going on with a debugger, I might add something like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;preprocessing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;raw_data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ndarray&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;buggy&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+
+    &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;IPython&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;IPython&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;embed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;When reaching &lt;code class=&quot;highlighter-rouge&quot;&gt;IPython.embed()&lt;/code&gt;, this opens an interactive Python session in
+the terminal that allows me to inspect all relevant variables, execute
+arbitrary code, experiment with possible solutions, … When you’re done, 
+simply exit IPython which will then also exit the program in the following line.&lt;/p&gt;
+
+&lt;h2 id=&quot;diffing-and-merging-jupyter-notebooks&quot;&gt;Diffing and Merging Jupyter Notebooks&lt;/h2&gt;
+
+&lt;p&gt;Working in close collaboration on challenging problems is easily my favorite
+aspect of being a data scientist. Resolving merge conflicts in Jupyter
+notebooks, however, that close collaboration inevitably leads to, has been a
+rather dreadful experience for me. That is, until I found 
+&lt;a href=&quot;https://github.com/jupyter/nbdime&quot;&gt;nbdime&lt;/a&gt;. It’s a super handy tool to diff
+and merge Jupyter notebooks in your terminal or via their web-based GUI.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/diagrams/nbmerge-web.png&quot; alt=&quot;merging notebooks with nbdime&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;speeding-up-bigquery&quot;&gt;Speeding Up BigQuery&lt;/h2&gt;
+
+&lt;p&gt;Transforming large amounts of data from 
+&lt;a href=&quot;https://cloud.google.com/bigquery&quot;&gt;BigQuery&lt;/a&gt; to Pandas DataFrames, even from
+within Google’s Compute Engine, can be incredibly slow. Fortunately, Google 
+offers an alternative that I’ve personally experienced to shorten load times
+by two orders of magnitude – BigQuery’s Storage API.
+Here’s how to use it (assuming that this API has been enabled in your project 
+and your service account has permissions to use it):&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;google.cloud&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bigquery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bigquery_storagev1beta1&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;credentials&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;project_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;bq_client&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bigquery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;credentials&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;credentials&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;project&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;project_id&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;bq_storage_client&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bigquery_storagev1beta1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BigQueryStorageClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;credentials&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;credentials&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;query&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;...&quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;bq_client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_dataframe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bq_storage_client&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bq_storage_client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Keep in mind, however, that this will result in additional costs.&lt;/p&gt;</content><author><name>Stefan Mesken</name></author><category term="Data-Science" /><category term="data science" /><category term="python" /><summary type="html">Recently, I’ve found myself gravitating toward a small set of ‘tricks’ in Python over and over again and thought it would be fun to share and discuss a few of them with other data scientists. So here they go:</summary></entry><entry><title type="html">Python Tricks For Data Scientist</title><link href="http://localhost:4000/data-science/python-tricks.md/" rel="alternate" type="text/html" title="Python Tricks For Data Scientist" /><published>2020-05-21T00:00:00+02:00</published><updated>2020-05-21T00:00:00+02:00</updated><id>http://localhost:4000/data-science/python-tricks.md</id><content type="html" xml:base="http://localhost:4000/data-science/python-tricks.md/">Recently, I've found myself gravitating toward a small set of 'tricks' in
+Python over and over again and thought it would be fun to share and discuss
+a few of them with other data scientists. So here they go:
+
+## Cached Data Loader 
+
+Jupyter notebooks are great for exploratory data analysis for many reasons.
+One major of which is their persistent state between code execution: You
+can load your data once and then iteratively perform all sorts of
+modifications / visualizations without having to reload your data over the
+network.
+
+Sometimes, however, that's still not enough: If your network connection is
+slow or the dataset you're trying to analyze particular large or you need
+to restart your kernel frequently for whatever reason, data loading can
+become a real pain.
+
+To this, I've found myself using cached data loading more and more frequently
+in recent times. Here's how this may look like in practice:
+
+```python
+def _cached_data_loader(
+    connector: StorageConnector,
+    query: str,
+    query_parameters: List[QueryParameter],
+    cache_location: Path,
+    force_update: bool, 
+) -&gt; pandas.DataFrame:
+    if force_update or not os.path.isfile(cache_location):
+        data = connector.query_to_dataframe(
+            query,
+            query_parameters
+        )
+        data.to_pickle(cache_location)
+    else:
+        data = pd.from_pickle(cache_location)
+
+    return data
+    
+def load_marketing_data(
+    query_parameters: List[QueryParameter] = [],
+    cache_location: Path = Path(&quot;cache/marketing.pkl&quot;),
+    force_update: bool = False
+) -&gt; pandas.DataFrame:
+    connector = ...
+    query = &quot;...&quot;
+    return = _cached_data_loader(
+        connector,
+        query,
+        query_parameters,
+        cache_location,
+        force_update
+    )
+```
+
+After downloading marketing data over the network, any subsequent call to this
+function will load a cached version from disk instead. However, by setting
+`force_update = True` you can still refresh your (cached) data at any time.
+
+This can probably be implemented much more elegantly as a decorator. And if you
+do, I'd love to hear about it!
+
+## Debugging with Upturn
+
+Since many bugs in data science code only occur on certain input data, debugging
+can be challenging and simple debugging tools often seem too restrictive,
+whereas more feature complete debugging tools can be intimidating. What I've found
+to be useful at times is to abuse IPython as a debugger.
+Say, for instance, that a certain pre-processing step in my data pipeline yields
+unexpected results. Instead of setting a breakpoint and attempting to understand
+what's going on with a debugger, I might add something like this:
+
+```python
+def preprocessing(raw_data: pd.DataFrame) -&gt; np.ndarray:
+    ...
+    buggy code
+    ...
+
+    import IPython
+    IPython.embed()
+    exit(1)
+
+    ...
+    return data
+```
+
+When reaching `IPython.embed()`, this opens an interactive Python session in
+the terminal that allows me to inspect all relevant variables, execute
+arbitrary code, experiment with possible solutions, ... When you're done, 
+simply exit IPython which will then also exit the program in the following line.
+
+## Diffing and Merging Jupyter Notebooks
+
+Working in close collaboration on challenging problems is easily my favorite
+aspect of being a data scientist. Resolving merge conflicts in Jupyter
+notebooks, however, that close collaboration inevitably leads to, has been a
+rather dreadful experience for me. That is, until I found 
+[nbdime](https://github.com/jupyter/nbdime). It's a super handy tool to diff
+and merge Jupyter notebooks in your terminal or via their web-based GUI. 
+
+&lt;img src=&quot;/images/diagrams/nbmerge-web.png&quot; alt=&quot;merging notebooks with nbdime&quot;/&gt;
+
+## Speeding Up BigQuery
+
+Transforming large amounts of data from 
+[BigQuery](https://cloud.google.com/bigquery) to Pandas DataFrames, even from
+within Google's Compute Engine, can be incredibly slow. Fortunately, Google 
+offers an alternative that I've personally experienced to shorten load times
+by two orders of magnitute -- BigQuery's Storage API.
+Here's how to use it (assuming that this API has been enabled in your project 
+and your service account has permissions to use it):
+
+```python
+from google.cloud import bigquery, bigquery_storagev1beta1
+
+credentials, project_id = ...
+
+bq_client = bigquery.Client(
+    credentials=credentials,
+    project=project_id
+)
+
+bq_storage_client = bigquery_storagev1beta1.BigQueryStorageClient(
+    credentials=credentials
+)
+
+query = &quot;...&quot;
+
+data = (
+    bq_client.query(query)
+    .result()
+    .to_dataframe(bq_storage_client=bq_storage_client)
+)
+```
+
+Keep in mind, however, that this will result in additional costs.</content><author><name>Stefan Mesken</name></author><category term="Data-Science" /><category term="data science" /><category term="python" /><summary type="html">Recently, I've found myself gravitating toward a small set of 'tricks' in Python over and over again and thought it would be fun to share and discuss a few of them with other data scientists. So here they go:</summary></entry><entry><title type="html">Machine Learning Golf</title><link href="http://localhost:4000/data-science/machine-learning-golf/" rel="alternate" type="text/html" title="Machine Learning Golf" /><published>2019-07-01T00:00:00+02:00</published><updated>2019-07-01T00:00:00+02:00</updated><id>http://localhost:4000/data-science/machine-learning-golf</id><content type="html" xml:base="http://localhost:4000/data-science/machine-learning-golf/">&lt;p&gt;For the last 5 years or so, I’ve been lurking on the &lt;a href=&quot;https://codegolf.stackexchange.com/&quot;&gt;Code Golf Stackexchange&lt;/a&gt;. Code Golf is the art of solving a given problem, under specified rules, with as little written code as possible. And if you have never encountered ‘golfed code’, I highly recommend taking a look. Not sure about other people but to my nerdy brain, reading the ingenious approaches these incredibly talented and passionate coders come up with, is pure entertainment gold!&lt;/p&gt;
 
 &lt;p&gt;For various reasons, I’ve never gotten into the hobby myself – until last week. While walking my dog, I thought about &lt;a href=&quot;https://www.newscientist.com/article/2205779-creating-an-ai-can-be-five-times-worse-for-the-planet-than-a-car/&quot;&gt;this article on the carbon footprint of machine learning&lt;/a&gt; and it occurred to me that the neural networks I’ve designed and trained are super wasteful in terms of their parameter efficiency – basically the number of free variables during training to adapt them to a given task. So, I thought to myself, what would happen if I added parameter efficiency as an additional metric?&lt;/p&gt;
 
@@ -14,7 +281,7 @@
   &lt;li&gt;a scoring system to judge the entries by.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;For logistics and visibility reasons, I suggest posting any such challenge on https://codegolf.stackexchange.com/ under the tag ‘machine-learning’, once that tag exists. &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;For logistics and visibility reasons, I suggest posting any such challenge on https://codegolf.stackexchange.com/ under the tag ‘machine-learning’, once that tag exists. &lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;Challengers then design and train their models according to the stated rules. Once their model meets the mandatory performance goal, they may submit their model (in a suitable form) and all code necessary to verify their results. As per usual in Code Golf, peers will then vote/comment on their and other submissions, suggest improvements and challengers may update their entries at any point and are free to enter multiple models.&lt;/p&gt;
 
@@ -28,15 +295,15 @@
 
 &lt;p&gt;To kick things off, I’ll propose the first, very simple challenge.&lt;/p&gt;
 
-&lt;p&gt;In the language and framework of your choice, design and train a neural network that, given &lt;script type=&quot;math/tex&quot;&gt;(x_1, x_2)&lt;/script&gt; calculates their product &lt;script type=&quot;math/tex&quot;&gt;x_1 \cdot x_2&lt;/script&gt; for all integers &lt;script type=&quot;math/tex&quot;&gt;x_1, x_2&lt;/script&gt; between (and including) &lt;script type=&quot;math/tex&quot;&gt;-10&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;10&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;In the language and framework of your choice, design and train a neural network that, given \((x_1, x_2)\) calculates their product \(x_1 \cdot x_2\) for all integers \(x_1, x_2\) between (and including) \(-10\) and \(10\).&lt;/p&gt;
 
 &lt;h2 id=&quot;performance-goal&quot;&gt;Performance Goal&lt;/h2&gt;
 
-&lt;p&gt;To qualify, your model may not deviate by more than &lt;script type=&quot;math/tex&quot;&gt;0.5&lt;/script&gt; from the correct result on any of those entries.&lt;/p&gt;
+&lt;p&gt;To qualify, your model may not deviate by more than \(0.5\) from the correct result on any of those entries.&lt;/p&gt;
 
 &lt;h2 id=&quot;bonus-goal&quot;&gt;Bonus Goal&lt;/h2&gt;
 
-&lt;p&gt;Achieve a maximal deviation (measured by the Euclidean norm) of &lt;script type=&quot;math/tex&quot;&gt;0.5&lt;/script&gt; for the multiplication of all complex numbers with integer components &lt;script type=&quot;math/tex&quot;&gt;c_1 = (a_1, b_1) = a_1 + b_1 \cdot i, c_2 = (a_2, b_2) = a_2 + b_2 \cdot i&lt;/script&gt; of Euclidean norm &lt;script type=&quot;math/tex&quot;&gt;\le 10&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;Achieve a maximal deviation (measured by the Euclidean norm) of \(0.5\) for the multiplication of all complex numbers with integer components \(c_1 = (a_1, b_1) = a_1 + b_1 \cdot i, c_2 = (a_2, b_2) = a_2 + b_2 \cdot i\) of Euclidean norm \(\le 10\).&lt;/p&gt;
 
 &lt;h2 id=&quot;rules&quot;&gt;Rules&lt;/h2&gt;
 
@@ -45,22 +312,22 @@
 &lt;ul&gt;
   &lt;li&gt;must be a ‘traditional’ neural network (a node’s value is calculated as a weighted linear combination of some of the nodes in a previous layer followed by an activation function),&lt;/li&gt;
   &lt;li&gt;may only use activation functions listed as such &lt;a href=&quot;https://keras.io/activations/&quot;&gt;in Keras&lt;/a&gt;,&lt;/li&gt;
-  &lt;li&gt;must take &lt;script type=&quot;math/tex&quot;&gt;(x_1, x_2)&lt;/script&gt; either as a tuple/vector/list/… of integers or floats as its only input,&lt;/li&gt;
-  &lt;li&gt;return the answer &lt;script type=&quot;math/tex&quot;&gt;\hat{y}&lt;/script&gt; as an integer, float (or a suitable container, e.g. a vector or list, that contains this answer).&lt;/li&gt;
+  &lt;li&gt;must take \((x_1, x_2)\) either as a tuple/vector/list/… of integers or floats as its only input,&lt;/li&gt;
+  &lt;li&gt;return the answer \(\hat{y}\) as an integer, float (or a suitable container, e.g. a vector or list, that contains this answer).&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;scoring&quot;&gt;Scoring&lt;/h2&gt;
 
 &lt;p&gt;The neural network with the &lt;em&gt;smallest number of weights&lt;/em&gt; (including bias weights) wins.&lt;/p&gt;
 
-&lt;p&gt;My best attempt so far uses 43 weights and achieves a maximal deviation of &lt;script type=&quot;math/tex&quot;&gt;0.04786&lt;/script&gt; as witnessed by &lt;script type=&quot;math/tex&quot;&gt;8 \cdot -8 \mapsto -63.521423&lt;/script&gt;. I’m sure there’s plenty of room for improvements and am looking forward to your entries!&lt;/p&gt;
+&lt;p&gt;My best attempt so far uses 43 weights and achieves a maximal deviation of \(0.04786\) as witnessed by \(8 \cdot -8 \mapsto -63.521423\). I’m sure there’s plenty of room for improvements and am looking forward to your entries!&lt;/p&gt;
 
 &lt;p&gt;If you want to participate or check out my submission, hop over to &lt;a href=&quot;https://codegolf.stackexchange.com/questions/187562/machine-learning-golf-multiplication&quot;&gt;this challenge on Code Golf Stackexchange&lt;/a&gt;.&lt;/p&gt;
 
-&lt;div class=&quot;footnotes&quot;&gt;
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
   &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
-      &lt;p&gt;This, of course, doesn’t mean that ML Golf is limited to this platform – feel free to post your challenges and submissions wherever you want. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;This, of course, doesn’t mean that ML Golf is limited to this platform – feel free to post your challenges and submissions wherever you want. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;</content><author><name>Stefan Mesken</name></author><category term="Data-Science" /><category term="machine learning" /><category term="neural networks" /><category term="ml golf" /><summary type="html">For the last 5 years or so, I’ve been lurking on the Code Golf Stackexchange. Code Golf is the art of solving a given problem, under specified rules, with as little written code as possible. And if you have never encountered ‘golfed code’, I highly recommend taking a look. Not sure about other people but to my nerdy brain, reading the ingenious approaches these incredibly talented and passionate coders come up with, is pure entertainment gold!</summary></entry><entry><title type="html">The Dangers of Performance Metrics</title><link href="http://localhost:4000/data-science/metrics/" rel="alternate" type="text/html" title="The Dangers of Performance Metrics" /><published>2019-06-21T00:00:00+02:00</published><updated>2019-06-21T00:00:00+02:00</updated><id>http://localhost:4000/data-science/metrics</id><content type="html" xml:base="http://localhost:4000/data-science/metrics/">&lt;p&gt;Full disclosure: I’m not a big fan of one-dimensional metrics when evaluating &lt;a href=&quot;https://en.wikipedia.org/wiki/Binary_classification&quot;&gt;(binary) classifiers&lt;/a&gt;
@@ -78,7 +345,7 @@
 &lt;ul&gt;
   &lt;li&gt;Their actual expressive power often isn’t clear,&lt;/li&gt;
   &lt;li&gt;It’s remarkably common for people to chase metrics that don’t align with their goals,&lt;/li&gt;
-  &lt;li&gt;The terminology can be misleading &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; and&lt;/li&gt;
+  &lt;li&gt;The terminology can be misleading &lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; and&lt;/li&gt;
   &lt;li&gt;Choosing a metric is often less a result of careful consideration than a symptom of &lt;a href=&quot;https://en.wikipedia.org/wiki/Information_bias_(psychology)&quot;&gt;information bias&lt;/a&gt; or high &lt;a href=&quot;https://en.wikipedia.org/wiki/Uncertainty_avoidance&quot;&gt;uncertainty avoidance&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -130,11 +397,11 @@
 \mathrm{ACC} = \frac{\mathrm{TP} + \mathrm{TN}}{\mathrm{P} + \mathrm{N}}
 \]&lt;/p&gt;
 
-&lt;p&gt;but what does it mean? Well, it’s the ratio of all instances that have been labelled correctly by our classifier. As such is serves as a good default performance metric for many tasks – especially if the test set is balanced (i.e. &lt;script type=&quot;math/tex&quot;&gt;\mathrm{P}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\mathrm{N}&lt;/script&gt; are of similar size) and consists of groups of roughly equal importance to your task.&lt;/p&gt;
+&lt;p&gt;but what does it mean? Well, it’s the ratio of all instances that have been labelled correctly by our classifier. As such is serves as a good default performance metric for many tasks – especially if the test set is balanced (i.e. \(\mathrm{P}\) and \(\mathrm{N}\) are of similar size) and consists of groups of roughly equal importance to your task.&lt;/p&gt;
 
-&lt;p&gt;The accuracy of CS8k is &lt;script type=&quot;math/tex&quot;&gt;\frac{283+527}{400 + 600} = 0.81 = 81 \%&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;The accuracy of CS8k is \(\frac{283+527}{400 + 600} = 0.81 = 81 \%\).&lt;/p&gt;
 
-&lt;p&gt;Let’s consider an example in which accuracy is a terrible metric: Suppose you decide to build a model that tries to detect breast cancer in women from their X-ray images. Your dataset consists of 100.000 randomly selected images and, as such, only contains 85 Positives. By always guessing ‘not breast cancer’, your classifier will achieve an accuracy of &lt;script type=&quot;math/tex&quot;&gt;\frac{0 + 99.015}{100000} = 99.015\%&lt;/script&gt;. And despite this impressive performance metric, you hopefully agree with me that this is an absolutely terrible model.&lt;/p&gt;
+&lt;p&gt;Let’s consider an example in which accuracy is a terrible metric: Suppose you decide to build a model that tries to detect breast cancer in women from their X-ray images. Your dataset consists of 100.000 randomly selected images and, as such, only contains 85 Positives. By always guessing ‘not breast cancer’, your classifier will achieve an accuracy of \(\frac{0 + 99.015}{100000} = 99.015\%\). And despite this impressive performance metric, you hopefully agree with me that this is an absolutely terrible model.&lt;/p&gt;
 
 &lt;h2 id=&quot;recall&quot;&gt;Recall&lt;/h2&gt;
 
@@ -144,9 +411,9 @@
 \mathrm{TPR} = \frac{\mathrm{TP}}{P}
 \]&lt;/p&gt;
 
-&lt;p&gt;and hence turns out to be a whopping &lt;script type=&quot;math/tex&quot;&gt;\frac{0}{85} = 0\%&lt;/script&gt; – truly awful!&lt;/p&gt;
+&lt;p&gt;and hence turns out to be a whopping \(\frac{0}{85} = 0\%\) – truly awful!&lt;/p&gt;
 
-&lt;p&gt;Recall measures how many of the Positives got detected as such &lt;em&gt;and only that&lt;/em&gt;. While it can be a highly relevant piece of information, it is not suitable as your single performance metric. By blindly guessing ‘Positive’, your model will always have a Recall of &lt;script type=&quot;math/tex&quot;&gt;100\%&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;Recall measures how many of the Positives got detected as such &lt;em&gt;and only that&lt;/em&gt;. While it can be a highly relevant piece of information, it is not suitable as your single performance metric. By blindly guessing ‘Positive’, your model will always have a Recall of \(100\%\).&lt;/p&gt;
 
 &lt;h2 id=&quot;precision&quot;&gt;Precision&lt;/h2&gt;
 
@@ -156,7 +423,7 @@
 \mathrm{PPV} = \frac{\mathrm{TP}}{\mathrm{TP} + \mathrm{FP}}
 \]&lt;/p&gt;
 
-&lt;p&gt;Since &lt;script type=&quot;math/tex&quot;&gt;\mathrm{FP} = 0&lt;/script&gt; for our breast cancer classifier, it has perfect precision – demonstrating that precision alone also isn’t suitable as a performance metric.&lt;/p&gt;
+&lt;p&gt;Since \(\mathrm{FP} = 0\) for our breast cancer classifier, it has perfect precision – demonstrating that precision alone also isn’t suitable as a performance metric.&lt;/p&gt;
 
 &lt;h2 id=&quot;f1-score&quot;&gt;F1 Score&lt;/h2&gt;
 
@@ -166,11 +433,11 @@
 \mathrm{F1} = \frac{2}{\frac{1}{\mathrm{TPR}} + \frac{1}{\mathrm{PPV}}} = \frac{2 \cdot \mathrm{TP}}{2 \cdot \mathrm{TP} + \mathrm{FP} + \mathrm{FN}}.
 \]&lt;/p&gt;
 
-&lt;p&gt;In order to achieve a high F1-Score, your model must achieve both high Recall and Precision &lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;. Not only that, because of the usage of the harmonic mean, a terrible score in either metric will destroy the F1-Score. In particular, our breast cancer classifier, despite having perfect precision, has an F1-Score of &lt;script type=&quot;math/tex&quot;&gt;\frac{2 \cdot 0}{ 2 \cdot 0 + 0 + 85} = 0&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;In order to achieve a high F1-Score, your model must achieve both high Recall and Precision &lt;sup id=&quot;fnref:2&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;. Not only that, because of the usage of the harmonic mean, a terrible score in either metric will destroy the F1-Score. In particular, our breast cancer classifier, despite having perfect precision, has an F1-Score of \(\frac{2 \cdot 0}{ 2 \cdot 0 + 0 + 85} = 0\).&lt;/p&gt;
 
 &lt;p&gt;If your task demands a balance of Recall and Precision (which typically require trade-offs), the F1-Score is a decent choice. However, it’s not a silver bullet for your performance metric needs either:&lt;/p&gt;
 
-&lt;p&gt;Consider the following scenario: We keep everything as before but flip the labels in our breast cancer example. So the breast cancer instances are now our Negatives and the non-breast cancer instances are now our Positives. Having changed nothing about the quality of our model, this now results in an F1-Score of &lt;script type=&quot;math/tex&quot;&gt;\frac{2 \cdot 99.015}{2 \cdot 99.0815 + 85 + 0 } \sim 0.9996&lt;/script&gt; – a nearly perfect score.&lt;/p&gt;
+&lt;p&gt;Consider the following scenario: We keep everything as before but flip the labels in our breast cancer example. So the breast cancer instances are now our Negatives and the non-breast cancer instances are now our Positives. Having changed nothing about the quality of our model, this now results in an F1-Score of \(\frac{2 \cdot 99.015}{2 \cdot 99.0815 + 85 + 0 } \sim 0.9996\) – a nearly perfect score.&lt;/p&gt;
 
 &lt;p&gt;There are other issues with these and every other one-dimensional performance metric but I think I’ve already demanded too much of your attention for now. So let’s reserve further criticism for another time…&lt;/p&gt;
 
@@ -180,13 +447,13 @@
 
 &lt;p&gt;In fact, I’d go as far as to say that the default for data science practitioners should be to &lt;em&gt;not consider any one-dimensional metric&lt;/em&gt; and instead analyse confusion matrices. They are, without a doubt, less convenient but that actually turns out to be their strength: Being forced to carefully thing through a confusion matrix will save your from making many mistakes that looking at a single, poorly chosen performance metric alone would have nudged you to commit.&lt;/p&gt;
 
-&lt;div class=&quot;footnotes&quot;&gt;
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
   &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
-      &lt;p&gt;Metrics tend to have names that we attach some intuitive meaning to (like ‘accuracy’) that doesn’t always align with the technical definition. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;Metrics tend to have names that we attach some intuitive meaning to (like ‘accuracy’) that doesn’t always align with the technical definition. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
-    &lt;li id=&quot;fn:2&quot;&gt;
-      &lt;p&gt;Not that, although the F1-Score takes only values between 0 and 1, people don’t often view the F1-Score as a percentage. And there are good reasons for that, that I won’t get into here. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:2&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;Not that, although the F1-Score takes only values between 0 and 1, people don’t often view the F1-Score as a percentage. And there are good reasons for that, that I won’t get into here. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;</content><author><name>Stefan Mesken</name></author><category term="Data-Science" /><category term="data science" /><category term="machine learning" /><category term="statistics" /><summary type="html">Full disclosure: I’m not a big fan of one-dimensional metrics when evaluating (binary) classifiers (e.g. a neural network that is supposed to distinguish pictures of cats and dogs). In my opinion, a confusion matrix is, in almost all instances, preferable for data scientists. However, that doesn’t mean there aren’t good reasons to use one-dimensional performance metrics:</summary></entry><entry><title type="html">An Hommage to Feynman’s Technique</title><link href="http://localhost:4000/machine%20learning/Feynman-technique/" rel="alternate" type="text/html" title="An Hommage to Feynman's Technique" /><published>2019-06-17T00:00:00+02:00</published><updated>2019-06-17T00:00:00+02:00</updated><id>http://localhost:4000/machine%20learning/Feynman-technique</id><content type="html" xml:base="http://localhost:4000/machine%20learning/Feynman-technique/">&lt;h1 id=&quot;fragile-knowledge&quot;&gt;Fragile Knowledge&lt;/h1&gt;
@@ -234,7 +501,7 @@ influence its source neuron has in the overall network and&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;An activation function, attached to each neuron, that determines the
-‘shape’ of this neuron’s discharge pattern. &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+‘shape’ of this neuron’s discharge pattern. &lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
@@ -286,8 +553,8 @@ toward assembling your internal database.&lt;/p&gt;
 
 &lt;p&gt;“Is there anything I already know about that could easily be realized
 as a neural network? Actually, yes: Linear functions are of the form
-&lt;script type=&quot;math/tex&quot;&gt;f(x) = a \cdot x + b&lt;/script&gt; and they are represented by the following
-neural network: &lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+\(f(x) = a \cdot x + b\) and they are represented by the following
+neural network: &lt;sup id=&quot;fnref:2&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;figure style=&quot;align: center&quot;&gt;
   &lt;img src=&quot;/images/diagrams/nn_linear_function.png&quot; style=&quot;max-width: 400px;&quot; alt=&quot;a neural network that represents a linear function&quot; /&gt;
@@ -301,21 +568,20 @@ must be able to capture logic gates, right? Right!&lt;/p&gt;
   &lt;img src=&quot;/images/diagrams/nn_not.png&quot; style=&quot;max-width: 400px;&quot; alt=&quot;a neural network that represents logical negation&quot; /&gt;
 &lt;/figure&gt;
 
-&lt;p&gt;Here &lt;script type=&quot;math/tex&quot;&gt;\chi = \chi_{[0, \infty)}&lt;/script&gt; is the activation function of
-&lt;script type=&quot;math/tex&quot;&gt;a_1&lt;/script&gt; and all you need to know is that &lt;script type=&quot;math/tex&quot;&gt;\chi(z) = 0&lt;/script&gt; for all &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
-z
-&lt; 0 %]]&gt;&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\chi(z) = 1&lt;/script&gt; for all &lt;script type=&quot;math/tex&quot;&gt;z \ge 0&lt;/script&gt;. So, if we set &lt;script type=&quot;math/tex&quot;&gt;x_1 =
-0&lt;/script&gt;, we get that &lt;script type=&quot;math/tex&quot;&gt;a_1 = \chi(w_0 \cdot x_0 + w_1 \cdot x_1) =
-\chi(0 \cdot 1 + (-1) \cdot 0) = \chi(0) = 0&lt;/script&gt;. On the other hand, if we let
-&lt;script type=&quot;math/tex&quot;&gt;x_1 = 1&lt;/script&gt;, we get that &lt;script type=&quot;math/tex&quot;&gt;a_1 = \chi(0 \cdot 1 + (-1) \cdot 1) = \chi(-1) =
-0&lt;/script&gt;. So this neural network does indeed represent &lt;script type=&quot;math/tex&quot;&gt;\mathrm{NOT}(x_1)&lt;/script&gt;!”&lt;/p&gt;
+&lt;p&gt;Here \(\chi = \chi_{[0, \infty)}\) is the activation function of
+\(a_1\) and all you need to know is that \(\chi(z) = 0\) for all \(z
+&amp;lt; 0\) and \(\chi(z) = 1\) for all \(z \ge 0\). So, if we set \(x_1 =
+0\), we get that \(a_1 = \chi(w_0 \cdot x_0 + w_1 \cdot x_1) =
+\chi(0 \cdot 1 + (-1) \cdot 0) = \chi(0) = 0\). On the other hand, if we let
+\(x_1 = 1\), we get that \(a_1 = \chi(0 \cdot 1 + (-1) \cdot 1) = \chi(-1) =
+0\). So this neural network does indeed represent \(\mathrm{NOT}(x_1)\)!”&lt;/p&gt;
 
 &lt;p&gt;At this point, you might want to cook up a few more examples and in an
 earlier tweet I demonstrated how to represent other basic logic gates
 (AND, OR, NOR, XOR, XNOR) as neural networks as well. I’d encourage
 you to try it yourself first and then &lt;a href=&quot;https://twitter.com/mesken_stefan/status/1138694458470539264&quot;&gt;hop over to
 Twitter&lt;/a&gt;
-and compare your results with mine. &lt;sup id=&quot;fnref:3&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+and compare your results with mine. &lt;sup id=&quot;fnref:3&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;p&gt;Once you’ve done that, you may notice what I’ve noticed: Not only can
 neural networks represent logic gates. &lt;em&gt;Neural networks are nothing
@@ -323,7 +589,7 @@ more than logic gates&lt;/em&gt;, with a few minor adjustments:&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;
-    &lt;p&gt;Inputs are allowed to take on any real number as value, not just &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;,&lt;/p&gt;
+    &lt;p&gt;Inputs are allowed to take on any real number as value, not just \(0\) and \(1\),&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;We add a restriction that a node’s value is computed by a weighted,
@@ -331,7 +597,7 @@ linear combination of the values to its left followed by an
 activation function and&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;We add an activation functions to our nodes. &lt;sup id=&quot;fnref:4&quot;&gt;&lt;a href=&quot;#fn:4&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;”&lt;/p&gt;
+    &lt;p&gt;We add an activation functions to our nodes. &lt;sup id=&quot;fnref:4&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:4&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;”&lt;/p&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
@@ -364,32 +630,32 @@ but, ultimately, also allow you to solve problems in surprising,
 efficient and truly ingenious ways. Being able to do that is, in a
 nutshell, the mark of a true expert.&lt;/p&gt;
 
-&lt;div class=&quot;footnotes&quot;&gt;
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
   &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
+    &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
       &lt;p&gt;I think it’s helpful to point out that this is one of the ways
 that artificial neural networks differ from biological
 ones. Biological neurons either fire or they don’t – so, in a
 way, the only activation function they’re allowed to have is the
 &lt;a href=&quot;https://en.wikipedia.org/wiki/Indicator_function&quot;&gt;characteristic
 function&lt;/a&gt;
-&lt;script type=&quot;math/tex&quot;&gt;\chi_{(-\infty, a]}&lt;/script&gt; for some number &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt;. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+\(\chi_{(-\infty, a]}\) for some number \(a\). &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
-    &lt;li id=&quot;fn:2&quot;&gt;
+    &lt;li id=&quot;fn:2&quot; role=&quot;doc-endnote&quot;&gt;
       &lt;p&gt;This follows Andrew Ng’s handy convention that any neuron/weight with
-a &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; as subscript represents a bias component – independent of the input. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+a \(0\) as subscript represents a bias component – independent of the input. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
-    &lt;li id=&quot;fn:3&quot;&gt;
-      &lt;p&gt;In case you don’t want to use Twitter, you can find my solution &lt;a href=&quot;http://localhost:4000/images/diagrams/nn_logic_gates.png&quot;&gt;here&lt;/a&gt; &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:3&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;In case you don’t want to use Twitter, you can find my solution &lt;a href=&quot;http://localhost:4000/images/diagrams/nn_logic_gates.png&quot;&gt;here&lt;/a&gt; &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
-    &lt;li id=&quot;fn:4&quot;&gt;
+    &lt;li id=&quot;fn:4&quot; role=&quot;doc-endnote&quot;&gt;
       &lt;p&gt;This point, in theory, is incredibly powerful. In fact, it’s too
 powerful. Since neural networks are intended to approximate some
-function &lt;script type=&quot;math/tex&quot;&gt;f&lt;/script&gt; to begin with, we could always achieve this by
-taking &lt;script type=&quot;math/tex&quot;&gt;f&lt;/script&gt; as our activation function. In practice, however,
-&lt;script type=&quot;math/tex&quot;&gt;f&lt;/script&gt; is unknown, we only allow activation functions from a very
+function \(f\) to begin with, we could always achieve this by
+taking \(f\) as our activation function. In practice, however,
+\(f\) is unknown, we only allow activation functions from a very
 restrictive, simple set of functions and their specific choice, in
-many cases, turns out to be surprisingly irrelevant. &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+many cases, turns out to be surprisingly irrelevant. &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;</content><author><name>Stefan Mesken</name></author><category term="Machine Learning" /><category term="neural networks" /><category term="machine learning" /><category term="human learning" /><summary type="html">Fragile Knowledge</summary></entry><entry><title type="html">TensorFlow Without Tears</title><link href="http://localhost:4000/machine%20learning/tensorflow-without-tears/" rel="alternate" type="text/html" title="TensorFlow Without Tears" /><published>2019-06-11T00:00:00+02:00</published><updated>2019-06-11T00:00:00+02:00</updated><id>http://localhost:4000/machine%20learning/tensorflow-without-tears</id><content type="html" xml:base="http://localhost:4000/machine%20learning/tensorflow-without-tears/">&lt;p&gt;Life is pretty crazy right now. Finishing a PhD, changing from set theory to applied data science, forming connections to other data scientists, learning as much about machine learning (both theory and practice) as I possibly can, finding a new apartment and preparing to move, dealing with German bureaucracy… This doesn’t leave a lot of spare time. Truth be told, it doesn’t leave any.&lt;/p&gt;
@@ -420,7 +686,7 @@ many cases, turns out to be surprisingly irrelevant. &lt;a href=&quot;#fnref:4&
 
 &lt;h1 id=&quot;hello-im-tensorflow&quot;&gt;Hello, I’m TensorFlow.&lt;/h1&gt;
 
-&lt;p&gt;In an effort to invite as many people as possible to share my excitement about TF2 and join the discussion, I’d like to end this post with a very simple regression task completed in TensorFlow 2. We aim to approximate the function &lt;script type=&quot;math/tex&quot;&gt;\sin \colon [0, 2 \pi] \to [-1, 1], x \mapsto \sin (x)&lt;/script&gt; with a neural network. You can find the &lt;a href=&quot;https://colab.research.google.com/drive/1b1Lil2bfpT--axFKgd2z-2LeIkCv0z5Y&quot;&gt;interactive Jupyter notebook over at Google Colaboratory&lt;/a&gt; or just continue reading for a slighly more verbose version.&lt;/p&gt;
+&lt;p&gt;In an effort to invite as many people as possible to share my excitement about TF2 and join the discussion, I’d like to end this post with a very simple regression task completed in TensorFlow 2. We aim to approximate the function \(\sin \colon [0, 2 \pi] \to [-1, 1], x \mapsto \sin (x)\) with a neural network. You can find the &lt;a href=&quot;https://colab.research.google.com/drive/1b1Lil2bfpT--axFKgd2z-2LeIkCv0z5Y&quot;&gt;interactive Jupyter notebook over at Google Colaboratory&lt;/a&gt; or just continue reading for a slighly more verbose version.&lt;/p&gt;
 
 &lt;p&gt;The first part of any machine learning project is to load our dependencies.&lt;/p&gt;
 
@@ -431,15 +697,15 @@ many cases, turns out to be surprisingly irrelevant. &lt;a href=&quot;#fnref:4&
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Next, we load our data. In this case, to keep things as simple as possible, we will simply create the sine function on the interval &lt;script type=&quot;math/tex&quot;&gt;[0, 2 \pi]&lt;/script&gt; and approximate it.&lt;/p&gt;
+&lt;p&gt;Next, we load our data. In this case, to keep things as simple as possible, we will simply create the sine function on the interval \([0, 2 \pi]\) and approximate it.&lt;/p&gt;
 
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pi&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pi&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;When possible, it’s always a good idea to look at a visual representation of your data. This serves as a baseline sanity check to ensure there is no immediately obvious problem.&lt;/p&gt;
 
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;figure style=&quot;align: center&quot;&gt;
@@ -449,23 +715,23 @@ many cases, turns out to be surprisingly irrelevant. &lt;a href=&quot;#fnref:4&
 &lt;p&gt;That looks okay, so let’s continue by building our neural network. The integration of Keras makes this very simple:&lt;/p&gt;
 
 &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Build a neural network with 2 hidden layers, each of size 128
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keras&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Sequential&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keras&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dense&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;activation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'relu'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input_shape&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keras&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dense&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;activation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'relu'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keras&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dense&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;activation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'linear'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keras&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Sequential&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keras&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dense&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;activation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'relu'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input_shape&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]),&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keras&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dense&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;activation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'relu'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;tf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keras&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dense&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;activation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'linear'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Compiling the model is similarly trivial.&lt;/p&gt;
 
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;compile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;optimizer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'adam'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;compile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;optimizer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'adam'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
               &lt;span class=&quot;n&quot;&gt;loss&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'mean_squared_error'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
               &lt;span class=&quot;n&quot;&gt;metrics&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'accuracy'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Finally, let’s fit the neural network to our training data.&lt;/p&gt;
 
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;epochs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;epochs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;blockquote&gt;
@@ -489,18 +755,18 @@ many cases, turns out to be surprisingly irrelevant. &lt;a href=&quot;#fnref:4&
   &lt;p&gt;&amp;lt;tensorflow.python.keras.callbacks.History at 0x7fa30305c5f8&amp;gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;That’s it! We’ve created and successfully trained a neural network to approximate the sine function on &lt;script type=&quot;math/tex&quot;&gt;[0, 2 \pi]&lt;/script&gt; and the training output seems encouraging. All that’s left to do is to visualize how well we’ve done:&lt;/p&gt;
+&lt;p&gt;That’s it! We’ve created and successfully trained a neural network to approximate the sine function on \([0, 2 \pi]\) and the training output seems encouraging. All that’s left to do is to visualize how well we’ve done:&lt;/p&gt;
 
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;pred&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;predict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pred&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'model prediction'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;pred&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;predict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pred&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'model prediction'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;figure style=&quot;align: center&quot;&gt;
   &lt;img src=&quot;/images/diagrams/since_prediction.png&quot; style=&quot;max-width: 400px;&quot; alt=&quot;prediction of the sine function&quot; /&gt;
 &lt;/figure&gt;
 
-&lt;p&gt;Not bad, not bad at all! The interval &lt;script type=&quot;math/tex&quot;&gt;[5,2 \pi]&lt;/script&gt; needs some work (and I encourage you to think about why our model performed so much worse on that section) but other than that, I’d say that our model does know how to create a sine wave.&lt;/p&gt;
+&lt;p&gt;Not bad, not bad at all! The interval \([5,2 \pi]\) needs some work (and I encourage you to think about why our model performed so much worse on that section) but other than that, I’d say that our model does know how to create a sine wave.&lt;/p&gt;
 
 &lt;p&gt;I’ve decided to give a few hints as to why our model performs worse on the tail end of our data set: Consider the following animation of the learning process&lt;/p&gt;
 
@@ -516,15 +782,15 @@ many cases, turns out to be surprisingly irrelevant. &lt;a href=&quot;#fnref:4&
 
 &lt;p&gt;The Kaggle competition ‘Titanic: Machine Learning from Disaster’ (and in fact any classification competition on Kaggle) can be modelled as follows:&lt;/p&gt;
 
-&lt;p&gt;Kaggle asks you to find a secret &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;-dimensional vector &lt;script type=&quot;math/tex&quot;&gt;\vec{k} = (k_1, k_2, \ldots, k_n)&lt;/script&gt; (with &lt;script type=&quot;math/tex&quot;&gt;n=418&lt;/script&gt; for the Titanic data set) where each number &lt;script type=&quot;math/tex&quot;&gt;k_i&lt;/script&gt; is either &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; (the passenger with ID &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; didn’t survive) or &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; (the passenger with ID &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; did survive). So all we really have to do is to guess &lt;script type=&quot;math/tex&quot;&gt;\vec{k}&lt;/script&gt; – no need for fancy machine learning techniques!&lt;/p&gt;
+&lt;p&gt;Kaggle asks you to find a secret \(n\)-dimensional vector \(\vec{k} = (k_1, k_2, \ldots, k_n)\) (with \(n=418\) for the Titanic data set) where each number \(k_i\) is either \(0\) (the passenger with ID \(i\) didn’t survive) or \(1\) (the passenger with ID \(i\) did survive). So all we really have to do is to guess \(\vec{k}\) – no need for fancy machine learning techniques!&lt;/p&gt;
 
-&lt;p&gt;There are &lt;script type=&quot;math/tex&quot;&gt;2^n&lt;/script&gt; many possible values for &lt;script type=&quot;math/tex&quot;&gt;\vec{k}&lt;/script&gt; and guessing all of them would be practically impossible. Fortunately, there’s one more ingredient to Kaggle that we can exploit: If we submit a guess &lt;script type=&quot;math/tex&quot;&gt;\vec{g} = (g_1, \ldots, g_n)&lt;/script&gt; to Kaggle, it will return a score – the number of correct guesses. I.e. the number of &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;s such that &lt;script type=&quot;math/tex&quot;&gt;g_i = k_i&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;There are \(2^n\) many possible values for \(\vec{k}\) and guessing all of them would be practically impossible. Fortunately, there’s one more ingredient to Kaggle that we can exploit: If we submit a guess \(\vec{g} = (g_1, \ldots, g_n)\) to Kaggle, it will return a score – the number of correct guesses. I.e. the number of \(i\)s such that \(g_i = k_i\).&lt;/p&gt;
 
 &lt;h2 id=&quot;a-naive-approach&quot;&gt;A Naive Approach&lt;/h2&gt;
 
-&lt;p&gt;This allows for a naive solution in (at most) &lt;script type=&quot;math/tex&quot;&gt;n+1&lt;/script&gt; many guesses: First guess &lt;script type=&quot;math/tex&quot;&gt;\vec{g}_0 = (0,0, \ldots, 0)&lt;/script&gt; resulting in a score of correct entries &lt;script type=&quot;math/tex&quot;&gt;s_0&lt;/script&gt; and then, for each &lt;script type=&quot;math/tex&quot;&gt;i = 1, \ldots, n&lt;/script&gt; guess &lt;script type=&quot;math/tex&quot;&gt;\vec{g}_i&lt;/script&gt; – the binary vector with only one &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; in position &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;. Let &lt;script type=&quot;math/tex&quot;&gt;s_i&lt;/script&gt; be the resulting score. If &lt;script type=&quot;math/tex&quot;&gt;s_i &gt; s_0&lt;/script&gt;, then the &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;th entry of &lt;script type=&quot;math/tex&quot;&gt;\vec{k}&lt;/script&gt; must be a &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;. Otherwise it is a &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;This allows for a naive solution in (at most) \(n+1\) many guesses: First guess \(\vec{g}_0 = (0,0, \ldots, 0)\) resulting in a score of correct entries \(s_0\) and then, for each \(i = 1, \ldots, n\) guess \(\vec{g}_i\) – the binary vector with only one \(1\) in position \(i\). Let \(s_i\) be the resulting score. If \(s_i &amp;gt; s_0\), then the \(i\)th entry of \(\vec{k}\) must be a \(1\). Otherwise it is a \(0\).&lt;/p&gt;
 
-&lt;p&gt;While this is certainly possible to pull off in practice &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;, it &lt;em&gt;does not&lt;/em&gt; satisfy my urge for efficiency.&lt;/p&gt;
+&lt;p&gt;While this is certainly possible to pull off in practice &lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;, it &lt;em&gt;does not&lt;/em&gt; satisfy my urge for efficiency.&lt;/p&gt;
 
 &lt;p&gt;Can we do better?&lt;/p&gt;
 
@@ -534,7 +800,7 @@ many cases, turns out to be surprisingly irrelevant. &lt;a href=&quot;#fnref:4&
 
 &lt;h3 id=&quot;definition&quot;&gt;Definition&lt;/h3&gt;
 
-&lt;p&gt;Let &lt;script type=&quot;math/tex&quot;&gt;G = (V;E)&lt;/script&gt; be an undirected &lt;a href=&quot;https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)&quot;&gt;graph&lt;/a&gt;. Let &lt;script type=&quot;math/tex&quot;&gt;u,v \in V&lt;/script&gt; be vertices. The &lt;em&gt;distance &lt;script type=&quot;math/tex&quot;&gt;d_G(v,u)&lt;/script&gt; of &lt;script type=&quot;math/tex&quot;&gt;v&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;u&lt;/script&gt;&lt;/em&gt; in &lt;script type=&quot;math/tex&quot;&gt;G&lt;/script&gt; (in symbols &lt;script type=&quot;math/tex&quot;&gt;d_G(u,v)&lt;/script&gt;) is the length of the minimal path of edges in &lt;script type=&quot;math/tex&quot;&gt;G&lt;/script&gt; that connects &lt;script type=&quot;math/tex&quot;&gt;v&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;u&lt;/script&gt;. If no such path exists, we let &lt;script type=&quot;math/tex&quot;&gt;d_G(v,u) := \infty&lt;/script&gt;. &lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;Let \(G = (V;E)\) be an undirected &lt;a href=&quot;https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)&quot;&gt;graph&lt;/a&gt;. Let \(u,v \in V\) be vertices. The &lt;em&gt;distance \(d_G(v,u)\) of \(v\) and \(u\)&lt;/em&gt; in \(G\) (in symbols \(d_G(u,v)\)) is the length of the minimal path of edges in \(G\) that connects \(v\) and \(u\). If no such path exists, we let \(d_G(v,u) := \infty\). &lt;sup id=&quot;fnref:2&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;figure&gt;
   &lt;img src=&quot;/images/diagrams/distance.png&quot; alt=&quot;distance of two nodes in a graph&quot; /&gt;
@@ -543,7 +809,7 @@ many cases, turns out to be surprisingly irrelevant. &lt;a href=&quot;#fnref:4&
 
 &lt;h3 id=&quot;definition-1&quot;&gt;Definition&lt;/h3&gt;
 
-&lt;p&gt;Let &lt;script type=&quot;math/tex&quot;&gt;G = (V;E)&lt;/script&gt; be an undirected graph and let &lt;script type=&quot;math/tex&quot;&gt;R \subseteq V&lt;/script&gt; be a set of vertices. &lt;em&gt;&lt;script type=&quot;math/tex&quot;&gt;R = \{r_1, \ldots, r_k \}&lt;/script&gt; resolves &lt;script type=&quot;math/tex&quot;&gt;G&lt;/script&gt;&lt;/em&gt; if every vertex &lt;script type=&quot;math/tex&quot;&gt;v \in V&lt;/script&gt; is uniquely determined by its vector of distances to members of &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt;. To put it in mathematical terms: &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt; resolves &lt;script type=&quot;math/tex&quot;&gt;G&lt;/script&gt; if the function&lt;/p&gt;
+&lt;p&gt;Let \(G = (V;E)\) be an undirected graph and let \(R \subseteq V\) be a set of vertices. &lt;em&gt;\(R = \{r_1, \ldots, r_k \}\) resolves \(G\)&lt;/em&gt; if every vertex \(v \in V\) is uniquely determined by its vector of distances to members of \(R\). To put it in mathematical terms: \(R\) resolves \(G\) if the function&lt;/p&gt;
 
 &lt;p&gt;\[
 d_R \colon V \to [0, \infty]^k, v \mapsto (d_G(v,r_1), d_G(v,r_2), \ldots, d_G(v,r_k))
@@ -551,7 +817,7 @@ d_R \colon V \to [0, \infty]^k, v \mapsto (d_G(v,r_1), d_G(v,r_2), \ldots, d_G(v
 
 &lt;p&gt;is &lt;a href=&quot;https://en.wikipedia.org/wiki/Injective_function&quot;&gt;injective&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;Note that &lt;script type=&quot;math/tex&quot;&gt;R = V = \{ v_1, \ldots, v_n \}&lt;/script&gt; trivially resolves &lt;script type=&quot;math/tex&quot;&gt;G&lt;/script&gt; as every &lt;script type=&quot;math/tex&quot;&gt;v \in V&lt;/script&gt; is uniquely determined by &lt;script type=&quot;math/tex&quot;&gt;i \in \{1, \ldots, n \}&lt;/script&gt; with &lt;script type=&quot;math/tex&quot;&gt;d_G(v,v_i) = 0&lt;/script&gt; since in this case we have &lt;script type=&quot;math/tex&quot;&gt;v = v_i&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;Note that \(R = V = \{ v_1, \ldots, v_n \}\) trivially resolves \(G\) as every \(v \in V\) is uniquely determined by \(i \in \{1, \ldots, n \}\) with \(d_G(v,v_i) = 0\) since in this case we have \(v = v_i\).&lt;/p&gt;
 
 &lt;p&gt;Consider the following example:&lt;/p&gt;
 
@@ -560,47 +826,47 @@ d_R \colon V \to [0, \infty]^k, v \mapsto (d_G(v,r_1), d_G(v,r_2), \ldots, d_G(v
   &lt;figcaption&gt;A resolving set of size 3 for H(3)&lt;/figcaption&gt;
 &lt;/figure&gt;
 
-&lt;p&gt;Here, the vertex &lt;script type=&quot;math/tex&quot;&gt;(0,1,1)&lt;/script&gt; is uniquely identified by having distance &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt; to  &lt;script type=&quot;math/tex&quot;&gt;r_1 = (0,0,0)&lt;/script&gt;, distance &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;r_2 = (1,0,0)&lt;/script&gt; and distance &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;r_3 = (1,1,0)&lt;/script&gt;. In other words, &lt;script type=&quot;math/tex&quot;&gt;(0,1,1)&lt;/script&gt; is the unique vertex with distance vector &lt;script type=&quot;math/tex&quot;&gt;d_R(0,1,1) = (2,3,2)&lt;/script&gt; to the highlighted resolving set.&lt;/p&gt;
+&lt;p&gt;Here, the vertex \((0,1,1)\) is uniquely identified by having distance \(2\) to  \(r_1 = (0,0,0)\), distance \(3\) to \(r_2 = (1,0,0)\) and distance \(2\) to \(r_3 = (1,1,0)\). In other words, \((0,1,1)\) is the unique vertex with distance vector \(d_R(0,1,1) = (2,3,2)\) to the highlighted resolving set.&lt;/p&gt;
 
-&lt;p&gt;I encourage the reader to check that &lt;script type=&quot;math/tex&quot;&gt;R = \{ (0,0,0), (1,0,0), (1,1,0) \}&lt;/script&gt; is indeed a resolving set for &lt;script type=&quot;math/tex&quot;&gt;H(3)&lt;/script&gt; to get a better feel for this rather abstract concept before moving on.&lt;/p&gt;
+&lt;p&gt;I encourage the reader to check that \(R = \{ (0,0,0), (1,0,0), (1,1,0) \}\) is indeed a resolving set for \(H(3)\) to get a better feel for this rather abstract concept before moving on.&lt;/p&gt;
 
 &lt;h3 id=&quot;definition-2&quot;&gt;Definition&lt;/h3&gt;
 
-&lt;p&gt;Let &lt;script type=&quot;math/tex&quot;&gt;G = (V;E)&lt;/script&gt; be an undirected graph. The &lt;em&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Metric_dimension_(graph_theory)&quot;&gt;metric dimension&lt;/a&gt; of &lt;script type=&quot;math/tex&quot;&gt;G&lt;/script&gt;&lt;/em&gt;  is the minimal size of some &lt;script type=&quot;math/tex&quot;&gt;R \subseteq V&lt;/script&gt; that resolves &lt;script type=&quot;math/tex&quot;&gt;G&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;Let \(G = (V;E)\) be an undirected graph. The &lt;em&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Metric_dimension_(graph_theory)&quot;&gt;metric dimension&lt;/a&gt; of \(G\)&lt;/em&gt;  is the minimal size of some \(R \subseteq V\) that resolves \(G\).&lt;/p&gt;
 
-&lt;p&gt;Returning to our example &lt;script type=&quot;math/tex&quot;&gt;H(3)&lt;/script&gt;: We’ve already found a resolving set of size &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; and a bit of computation confirms that there is no resolving set of size &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt;. Therefore the metric dimension of &lt;script type=&quot;math/tex&quot;&gt;H(3)&lt;/script&gt; is &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;Returning to our example \(H(3)\): We’ve already found a resolving set of size \(3\) and a bit of computation confirms that there is no resolving set of size \(2\). Therefore the metric dimension of \(H(3)\) is \(3\).&lt;/p&gt;
 
 &lt;p&gt;It is now time to meet the hero of our advanced guessing strategy.&lt;/p&gt;
 
 &lt;h3 id=&quot;definition-3&quot;&gt;Definition&lt;/h3&gt;
 
-&lt;p&gt;The &lt;em&gt;&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;-dimensional &lt;a href=&quot;https://en.wikipedia.org/wiki/Hamming_graph&quot;&gt;Hamming graph&lt;/a&gt;&lt;/em&gt; is the undirected graph &lt;script type=&quot;math/tex&quot;&gt;H(n) = (V;E)&lt;/script&gt; whose vertices are all &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;-dimensional binary vectors &lt;script type=&quot;math/tex&quot;&gt;\vec{v} = (v_1, \ldots, v_n)&lt;/script&gt; such that &lt;script type=&quot;math/tex&quot;&gt;\{\vec{v},\vec{u}\} \in E&lt;/script&gt; iff they differ in exactly one position, i.e.&lt;/p&gt;
+&lt;p&gt;The &lt;em&gt;\(n\)-dimensional &lt;a href=&quot;https://en.wikipedia.org/wiki/Hamming_graph&quot;&gt;Hamming graph&lt;/a&gt;&lt;/em&gt; is the undirected graph \(H(n) = (V;E)\) whose vertices are all \(n\)-dimensional binary vectors \(\vec{v} = (v_1, \ldots, v_n)\) such that \(\{\vec{v},\vec{u}\} \in E\) iff they differ in exactly one position, i.e.&lt;/p&gt;
 
 &lt;p&gt;\[
 E = \{ \{ \vec{v}, \vec{u} \} \mid \{i \mid v_i \neq u_i \} \text{ has size 1 } \}.
 \]&lt;/p&gt;
 
-&lt;p&gt;If you look back to the diagram of &lt;script type=&quot;math/tex&quot;&gt;H(3)&lt;/script&gt;, you will see that this is indeed the &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt;-dimensional Hamming graph. Its vertices are binary vectors of length &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt; and they are connected via a single edge if and only if they differ in exactly one coordinate.&lt;/p&gt;
+&lt;p&gt;If you look back to the diagram of \(H(3)\), you will see that this is indeed the \(3\)-dimensional Hamming graph. Its vertices are binary vectors of length \(3\) and they are connected via a single edge if and only if they differ in exactly one coordinate.&lt;/p&gt;
 
 &lt;h2 id=&quot;a-graph-theoretic-guessing-strategy&quot;&gt;A Graph Theoretic Guessing Strategy&lt;/h2&gt;
 
-&lt;p&gt;Here is our graph theoretic guessing strategy: Let &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt; be a small resolving set for &lt;script type=&quot;math/tex&quot;&gt;H(n)&lt;/script&gt;. Submit each &lt;script type=&quot;math/tex&quot;&gt;\vec{r} \in R&lt;/script&gt; as a guess to Kaggle which sends back its score &lt;script type=&quot;math/tex&quot;&gt;s(\vec{r})&lt;/script&gt;. If &lt;script type=&quot;math/tex&quot;&gt;s(\vec{r}) = n&lt;/script&gt; for some &lt;script type=&quot;math/tex&quot;&gt;\vec{r}&lt;/script&gt;, we’ve achieved a perfect score and are done with this competition. Otherwise, since &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt; is a resolving set, there is a unique vertex &lt;script type=&quot;math/tex&quot;&gt;\vec{g}&lt;/script&gt; in &lt;script type=&quot;math/tex&quot;&gt;H(n)&lt;/script&gt; such that&lt;/p&gt;
+&lt;p&gt;Here is our graph theoretic guessing strategy: Let \(R\) be a small resolving set for \(H(n)\). Submit each \(\vec{r} \in R\) as a guess to Kaggle which sends back its score \(s(\vec{r})\). If \(s(\vec{r}) = n\) for some \(\vec{r}\), we’ve achieved a perfect score and are done with this competition. Otherwise, since \(R\) is a resolving set, there is a unique vertex \(\vec{g}\) in \(H(n)\) such that&lt;/p&gt;
 
 &lt;p&gt;\[
 d_{H(n)}(\vec{g},\vec{r}) = n - s(\vec{r})
 \]&lt;/p&gt;
 
-&lt;p&gt;for all &lt;script type=&quot;math/tex&quot;&gt;\vec{r} \in R&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;for all \(\vec{r} \in R\).&lt;/p&gt;
 
-&lt;p&gt;However, by the construction of &lt;script type=&quot;math/tex&quot;&gt;H(n)&lt;/script&gt;, we have &lt;script type=&quot;math/tex&quot;&gt;d_{H(n)} (\vec{k},\vec{r}) = n - s(\vec{r})&lt;/script&gt; (where &lt;script type=&quot;math/tex&quot;&gt;\vec{k}&lt;/script&gt; is Kaggle’s secret solution vector) for all &lt;script type=&quot;math/tex&quot;&gt;\vec{r} \in R&lt;/script&gt;.&lt;/p&gt;
+&lt;p&gt;However, by the construction of \(H(n)\), we have \(d_{H(n)} (\vec{k},\vec{r}) = n - s(\vec{r})\) (where \(\vec{k}\) is Kaggle’s secret solution vector) for all \(\vec{r} \in R\).&lt;/p&gt;
 
-&lt;p&gt;Since &lt;script type=&quot;math/tex&quot;&gt;\vec{g}&lt;/script&gt; is the &lt;em&gt;unique&lt;/em&gt; vector with this property, we must have that &lt;script type=&quot;math/tex&quot;&gt;\vec{g} = \vec{k}&lt;/script&gt; is the desired solution. This strategy therefore guarantees a perfect score in at most &lt;script type=&quot;math/tex&quot;&gt;\mathrm{size(R)} + 1&lt;/script&gt; many submissions!&lt;/p&gt;
+&lt;p&gt;Since \(\vec{g}\) is the &lt;em&gt;unique&lt;/em&gt; vector with this property, we must have that \(\vec{g} = \vec{k}\) is the desired solution. This strategy therefore guarantees a perfect score in at most \(\mathrm{size(R)} + 1\) many submissions!&lt;/p&gt;
 
-&lt;p&gt;Now, because &lt;script type=&quot;math/tex&quot;&gt;H(n)&lt;/script&gt; has a metric dimension of &lt;script type=&quot;math/tex&quot;&gt;\frac{(2+ o(1))n}{\log_2(n)}&lt;/script&gt;, we will be able to crack the Titanic dataset in &lt;script type=&quot;math/tex&quot;&gt;\sim 97&lt;/script&gt; &lt;sup id=&quot;fnref:3&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; submissions and furthermore, if we commit to submitting all but the final guess at once, this is known to be an optimal guessing strategy.&lt;/p&gt;
+&lt;p&gt;Now, because \(H(n)\) has a metric dimension of \(\frac{(2+ o(1))n}{\log_2(n)}\), we will be able to crack the Titanic dataset in \(\sim 97\) &lt;sup id=&quot;fnref:3&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; submissions and furthermore, if we commit to submitting all but the final guess at once, this is known to be an optimal guessing strategy.&lt;/p&gt;
 
 &lt;h2 id=&quot;confessions&quot;&gt;Confessions&lt;/h2&gt;
 
-&lt;p&gt;While this graph theoretic approach to beat Kaggle, from a purely mathematical point of view, is very pleasing, it doesn’t seem that practical after all. For instance, while the metric dimension of &lt;script type=&quot;math/tex&quot;&gt;H(n)&lt;/script&gt; is known asymptotically, &lt;a href=&quot;https://mathoverflow.net/questions/332434/explicit-small-resolving-sets-for-hamming-graphs&quot;&gt;it’s not clear to me how to find small resolving sets for &lt;script type=&quot;math/tex&quot;&gt;H(n)&lt;/script&gt; in practice&lt;/a&gt;. Furthermore, even if you were given a small resolving set &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt;, calculating &lt;script type=&quot;math/tex&quot;&gt;\vec{k}&lt;/script&gt; from &lt;script type=&quot;math/tex&quot;&gt;\{ d_{H(n)}(\vec{k}, \vec{r}) \mid \vec{r} \in R \}&lt;/script&gt; requires some serious computational power. Granted, it doesn’t increase the number of guesses required, the metric I’ve chosen to optimize for, but it still results in so much computational overhead that the naive approach will win out.&lt;/p&gt;
+&lt;p&gt;While this graph theoretic approach to beat Kaggle, from a purely mathematical point of view, is very pleasing, it doesn’t seem that practical after all. For instance, while the metric dimension of \(H(n)\) is known asymptotically, &lt;a href=&quot;https://mathoverflow.net/questions/332434/explicit-small-resolving-sets-for-hamming-graphs&quot;&gt;it’s not clear to me how to find small resolving sets for \(H(n)\) in practice&lt;/a&gt;. Furthermore, even if you were given a small resolving set \(R\), calculating \(\vec{k}\) from \(\{ d_{H(n)}(\vec{k}, \vec{r}) \mid \vec{r} \in R \}\) requires some serious computational power. Granted, it doesn’t increase the number of guesses required, the metric I’ve chosen to optimize for, but it still results in so much computational overhead that the naive approach will win out.&lt;/p&gt;
 
 &lt;p&gt;What’s worse: We are not taking full advantage of Kaggle’s feedback to our guesses. When guessing the entries of our resolving set one by one, we don’t use the information gained to guide our future guesses. Instead we could just as well have submitted them all in one go, collect the scores and then compute the correct solution. If we add this further restriction, the solution presented here is optimal. However, without this artificial restriction, I suspect that a better performing, general solution should be possible and I’d very much like to find one.&lt;/p&gt;
 
@@ -611,8 +877,8 @@ d_{H(n)}(\vec{g},\vec{r}) = n - s(\vec{r})
 &lt;h2 id=&quot;sources&quot;&gt;Sources&lt;/h2&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://mathoverflow.net/questions/58600&quot;&gt;Math Overflow. Guessing a subset of &lt;script type=&quot;math/tex&quot;&gt;\{1, \ldots, N \}&lt;/script&gt;&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://epubs.siam.org/doi/pdf/10.1137/1.9781611975482.74&quot;&gt;Jian, Polyanskii. How to guess an &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;-digit number&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://mathoverflow.net/questions/58600&quot;&gt;Math Overflow. Guessing a subset of \(\{1, \ldots, N \}\)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://epubs.siam.org/doi/pdf/10.1137/1.9781611975482.74&quot;&gt;Jian, Polyanskii. How to guess an \(n\)-digit number&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://arxiv.org/pdf/1712.02723.pdf&quot;&gt;Jian, Polyanksii. On the metric dimension of Cartesian powers of a graph&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://arxiv.org/pdf/math/0507527.pdf&quot;&gt;Caceres, Puertas. ON THE METRIC DIMENSION OFCARTESIAN PRODUCTS OF GRAPHS&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://arxiv.org/pdf/math/0507527.pdf&quot;&gt;Caceres, Hernando, Mora, Pelayo, Puertas, Seara and Wood. ON THE METRIC DIMENSION OF CARTESIAN PRODUCTS OF GRAPHS&lt;/a&gt;&lt;/li&gt;
@@ -620,16 +886,16 @@ d_{H(n)}(\vec{g},\vec{r}) = n - s(\vec{r})
   &lt;li&gt;&lt;a href=&quot;https://mathoverflow.net/questions/332434/explicit-small-resolving-sets-for-hamming-graphs&quot;&gt;Math Overflow. Explicit, small resolving sets for Hamming graphs&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;footnotes&quot;&gt;
+&lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
   &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
-      &lt;p&gt;Kaggle’s daily submission limit poses only the tiniest of hurdles to any programmer… &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:1&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;Kaggle’s daily submission limit poses only the tiniest of hurdles to any programmer… &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
-    &lt;li id=&quot;fn:2&quot;&gt;
-      &lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;d_G&lt;/script&gt; is the usual &lt;a href=&quot;https://en.wikipedia.org/wiki/Distance_(graph_theory)&quot;&gt;graph metric&lt;/a&gt; &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:2&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;\(d_G\) is the usual &lt;a href=&quot;https://en.wikipedia.org/wiki/Distance_(graph_theory)&quot;&gt;graph metric&lt;/a&gt; &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
-    &lt;li id=&quot;fn:3&quot;&gt;
-      &lt;p&gt;The exact number depends on the precise metric dimension of &lt;script type=&quot;math/tex&quot;&gt;H(418)&lt;/script&gt; which I do not yet know at the time of writing this post. All I know for certain is that it is &lt;script type=&quot;math/tex&quot;&gt;\le 418&lt;/script&gt;. &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;li id=&quot;fn:3&quot; role=&quot;doc-endnote&quot;&gt;
+      &lt;p&gt;The exact number depends on the precise metric dimension of \(H(418)\) which I do not yet know at the time of writing this post. All I know for certain is that it is \(\le 418\). &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot; role=&quot;doc-backlink&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
 &lt;/div&gt;</content><author><name>Stefan Mesken</name></author><category term="Machine Learning" /><category term="machine learning" /><category term="mathematics" /><category term="graph theory" /><summary type="html">A few nights ago, I found myself tinkering with the Titanic data set on Kaggle and couldn’t help but notice the number of people with a perfect score – many of whom have a single entry.</summary></entry></feed>

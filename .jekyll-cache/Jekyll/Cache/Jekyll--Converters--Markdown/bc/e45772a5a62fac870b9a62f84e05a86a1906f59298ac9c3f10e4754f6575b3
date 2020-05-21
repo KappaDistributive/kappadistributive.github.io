@@ -1,4 +1,4 @@
-I"�7<p>A few nights ago, I found myself tinkering with the <a href="https://www.kaggle.com/c/titanic">Titanic data set on Kaggle</a> and couldn’t help but notice the number of people with a <a href="https://www.kaggle.com/c/titanic/leaderboard">perfect score</a> – many of whom have a single entry.</p>
+I"�+<p>A few nights ago, I found myself tinkering with the <a href="https://www.kaggle.com/c/titanic">Titanic data set on Kaggle</a> and couldn’t help but notice the number of people with a <a href="https://www.kaggle.com/c/titanic/leaderboard">perfect score</a> – many of whom have a single entry.</p>
 
 <p>So, I thought to myself: “Clearly, they must be cheating. But how do you cheat efficiently?”</p>
 
@@ -6,15 +6,15 @@
 
 <p>The Kaggle competition ‘Titanic: Machine Learning from Disaster’ (and in fact any classification competition on Kaggle) can be modelled as follows:</p>
 
-<p>Kaggle asks you to find a secret <script type="math/tex">n</script>-dimensional vector <script type="math/tex">\vec{k} = (k_1, k_2, \ldots, k_n)</script> (with <script type="math/tex">n=418</script> for the Titanic data set) where each number <script type="math/tex">k_i</script> is either <script type="math/tex">0</script> (the passenger with ID <script type="math/tex">i</script> didn’t survive) or <script type="math/tex">1</script> (the passenger with ID <script type="math/tex">i</script> did survive). So all we really have to do is to guess <script type="math/tex">\vec{k}</script> – no need for fancy machine learning techniques!</p>
+<p>Kaggle asks you to find a secret \(n\)-dimensional vector \(\vec{k} = (k_1, k_2, \ldots, k_n)\) (with \(n=418\) for the Titanic data set) where each number \(k_i\) is either \(0\) (the passenger with ID \(i\) didn’t survive) or \(1\) (the passenger with ID \(i\) did survive). So all we really have to do is to guess \(\vec{k}\) – no need for fancy machine learning techniques!</p>
 
-<p>There are <script type="math/tex">2^n</script> many possible values for <script type="math/tex">\vec{k}</script> and guessing all of them would be practically impossible. Fortunately, there’s one more ingredient to Kaggle that we can exploit: If we submit a guess <script type="math/tex">\vec{g} = (g_1, \ldots, g_n)</script> to Kaggle, it will return a score – the number of correct guesses. I.e. the number of <script type="math/tex">i</script>s such that <script type="math/tex">g_i = k_i</script>.</p>
+<p>There are \(2^n\) many possible values for \(\vec{k}\) and guessing all of them would be practically impossible. Fortunately, there’s one more ingredient to Kaggle that we can exploit: If we submit a guess \(\vec{g} = (g_1, \ldots, g_n)\) to Kaggle, it will return a score – the number of correct guesses. I.e. the number of \(i\)s such that \(g_i = k_i\).</p>
 
 <h2 id="a-naive-approach">A Naive Approach</h2>
 
-<p>This allows for a naive solution in (at most) <script type="math/tex">n+1</script> many guesses: First guess <script type="math/tex">\vec{g}_0 = (0,0, \ldots, 0)</script> resulting in a score of correct entries <script type="math/tex">s_0</script> and then, for each <script type="math/tex">i = 1, \ldots, n</script> guess <script type="math/tex">\vec{g}_i</script> – the binary vector with only one <script type="math/tex">1</script> in position <script type="math/tex">i</script>. Let <script type="math/tex">s_i</script> be the resulting score. If <script type="math/tex">s_i > s_0</script>, then the <script type="math/tex">i</script>th entry of <script type="math/tex">\vec{k}</script> must be a <script type="math/tex">1</script>. Otherwise it is a <script type="math/tex">0</script>.</p>
+<p>This allows for a naive solution in (at most) \(n+1\) many guesses: First guess \(\vec{g}_0 = (0,0, \ldots, 0)\) resulting in a score of correct entries \(s_0\) and then, for each \(i = 1, \ldots, n\) guess \(\vec{g}_i\) – the binary vector with only one \(1\) in position \(i\). Let \(s_i\) be the resulting score. If \(s_i &gt; s_0\), then the \(i\)th entry of \(\vec{k}\) must be a \(1\). Otherwise it is a \(0\).</p>
 
-<p>While this is certainly possible to pull off in practice <sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>, it <em>does not</em> satisfy my urge for efficiency.</p>
+<p>While this is certainly possible to pull off in practice <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup>, it <em>does not</em> satisfy my urge for efficiency.</p>
 
 <p>Can we do better?</p>
 
@@ -24,7 +24,7 @@
 
 <h3 id="definition">Definition</h3>
 
-<p>Let <script type="math/tex">G = (V;E)</script> be an undirected <a href="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)">graph</a>. Let <script type="math/tex">u,v \in V</script> be vertices. The <em>distance <script type="math/tex">d_G(v,u)</script> of <script type="math/tex">v</script> and <script type="math/tex">u</script></em> in <script type="math/tex">G</script> (in symbols <script type="math/tex">d_G(u,v)</script>) is the length of the minimal path of edges in <script type="math/tex">G</script> that connects <script type="math/tex">v</script> and <script type="math/tex">u</script>. If no such path exists, we let <script type="math/tex">d_G(v,u) := \infty</script>. <sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></p>
+<p>Let \(G = (V;E)\) be an undirected <a href="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)">graph</a>. Let \(u,v \in V\) be vertices. The <em>distance \(d_G(v,u)\) of \(v\) and \(u\)</em> in \(G\) (in symbols \(d_G(u,v)\)) is the length of the minimal path of edges in \(G\) that connects \(v\) and \(u\). If no such path exists, we let \(d_G(v,u) := \infty\). <sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote">2</a></sup></p>
 
 <figure>
   <img src="/images/diagrams/distance.png" alt="distance of two nodes in a graph" />
@@ -33,7 +33,7 @@
 
 <h3 id="definition-1">Definition</h3>
 
-<p>Let <script type="math/tex">G = (V;E)</script> be an undirected graph and let <script type="math/tex">R \subseteq V</script> be a set of vertices. <em><script type="math/tex">R = \{r_1, \ldots, r_k \}</script> resolves <script type="math/tex">G</script></em> if every vertex <script type="math/tex">v \in V</script> is uniquely determined by its vector of distances to members of <script type="math/tex">R</script>. To put it in mathematical terms: <script type="math/tex">R</script> resolves <script type="math/tex">G</script> if the function</p>
+<p>Let \(G = (V;E)\) be an undirected graph and let \(R \subseteq V\) be a set of vertices. <em>\(R = \{r_1, \ldots, r_k \}\) resolves \(G\)</em> if every vertex \(v \in V\) is uniquely determined by its vector of distances to members of \(R\). To put it in mathematical terms: \(R\) resolves \(G\) if the function</p>
 
 <p>\[
 d_R \colon V \to [0, \infty]^k, v \mapsto (d_G(v,r_1), d_G(v,r_2), \ldots, d_G(v,r_k))
@@ -41,7 +41,7 @@ d_R \colon V \to [0, \infty]^k, v \mapsto (d_G(v,r_1), d_G(v,r_2), \ldots, d_G(v
 
 <p>is <a href="https://en.wikipedia.org/wiki/Injective_function">injective</a>.</p>
 
-<p>Note that <script type="math/tex">R = V = \{ v_1, \ldots, v_n \}</script> trivially resolves <script type="math/tex">G</script> as every <script type="math/tex">v \in V</script> is uniquely determined by <script type="math/tex">i \in \{1, \ldots, n \}</script> with <script type="math/tex">d_G(v,v_i) = 0</script> since in this case we have <script type="math/tex">v = v_i</script>.</p>
+<p>Note that \(R = V = \{ v_1, \ldots, v_n \}\) trivially resolves \(G\) as every \(v \in V\) is uniquely determined by \(i \in \{1, \ldots, n \}\) with \(d_G(v,v_i) = 0\) since in this case we have \(v = v_i\).</p>
 
 <p>Consider the following example:</p>
 
@@ -50,47 +50,47 @@ d_R \colon V \to [0, \infty]^k, v \mapsto (d_G(v,r_1), d_G(v,r_2), \ldots, d_G(v
   <figcaption>A resolving set of size 3 for H(3)</figcaption>
 </figure>
 
-<p>Here, the vertex <script type="math/tex">(0,1,1)</script> is uniquely identified by having distance <script type="math/tex">2</script> to  <script type="math/tex">r_1 = (0,0,0)</script>, distance <script type="math/tex">3</script> to <script type="math/tex">r_2 = (1,0,0)</script> and distance <script type="math/tex">2</script> to <script type="math/tex">r_3 = (1,1,0)</script>. In other words, <script type="math/tex">(0,1,1)</script> is the unique vertex with distance vector <script type="math/tex">d_R(0,1,1) = (2,3,2)</script> to the highlighted resolving set.</p>
+<p>Here, the vertex \((0,1,1)\) is uniquely identified by having distance \(2\) to  \(r_1 = (0,0,0)\), distance \(3\) to \(r_2 = (1,0,0)\) and distance \(2\) to \(r_3 = (1,1,0)\). In other words, \((0,1,1)\) is the unique vertex with distance vector \(d_R(0,1,1) = (2,3,2)\) to the highlighted resolving set.</p>
 
-<p>I encourage the reader to check that <script type="math/tex">R = \{ (0,0,0), (1,0,0), (1,1,0) \}</script> is indeed a resolving set for <script type="math/tex">H(3)</script> to get a better feel for this rather abstract concept before moving on.</p>
+<p>I encourage the reader to check that \(R = \{ (0,0,0), (1,0,0), (1,1,0) \}\) is indeed a resolving set for \(H(3)\) to get a better feel for this rather abstract concept before moving on.</p>
 
 <h3 id="definition-2">Definition</h3>
 
-<p>Let <script type="math/tex">G = (V;E)</script> be an undirected graph. The <em><a href="https://en.wikipedia.org/wiki/Metric_dimension_(graph_theory)">metric dimension</a> of <script type="math/tex">G</script></em>  is the minimal size of some <script type="math/tex">R \subseteq V</script> that resolves <script type="math/tex">G</script>.</p>
+<p>Let \(G = (V;E)\) be an undirected graph. The <em><a href="https://en.wikipedia.org/wiki/Metric_dimension_(graph_theory)">metric dimension</a> of \(G\)</em>  is the minimal size of some \(R \subseteq V\) that resolves \(G\).</p>
 
-<p>Returning to our example <script type="math/tex">H(3)</script>: We’ve already found a resolving set of size <script type="math/tex">3</script> and a bit of computation confirms that there is no resolving set of size <script type="math/tex">2</script>. Therefore the metric dimension of <script type="math/tex">H(3)</script> is <script type="math/tex">3</script>.</p>
+<p>Returning to our example \(H(3)\): We’ve already found a resolving set of size \(3\) and a bit of computation confirms that there is no resolving set of size \(2\). Therefore the metric dimension of \(H(3)\) is \(3\).</p>
 
 <p>It is now time to meet the hero of our advanced guessing strategy.</p>
 
 <h3 id="definition-3">Definition</h3>
 
-<p>The <em><script type="math/tex">n</script>-dimensional <a href="https://en.wikipedia.org/wiki/Hamming_graph">Hamming graph</a></em> is the undirected graph <script type="math/tex">H(n) = (V;E)</script> whose vertices are all <script type="math/tex">n</script>-dimensional binary vectors <script type="math/tex">\vec{v} = (v_1, \ldots, v_n)</script> such that <script type="math/tex">\{\vec{v},\vec{u}\} \in E</script> iff they differ in exactly one position, i.e.</p>
+<p>The <em>\(n\)-dimensional <a href="https://en.wikipedia.org/wiki/Hamming_graph">Hamming graph</a></em> is the undirected graph \(H(n) = (V;E)\) whose vertices are all \(n\)-dimensional binary vectors \(\vec{v} = (v_1, \ldots, v_n)\) such that \(\{\vec{v},\vec{u}\} \in E\) iff they differ in exactly one position, i.e.</p>
 
 <p>\[
 E = \{ \{ \vec{v}, \vec{u} \} \mid \{i \mid v_i \neq u_i \} \text{ has size 1 } \}.
 \]</p>
 
-<p>If you look back to the diagram of <script type="math/tex">H(3)</script>, you will see that this is indeed the <script type="math/tex">3</script>-dimensional Hamming graph. Its vertices are binary vectors of length <script type="math/tex">3</script> and they are connected via a single edge if and only if they differ in exactly one coordinate.</p>
+<p>If you look back to the diagram of \(H(3)\), you will see that this is indeed the \(3\)-dimensional Hamming graph. Its vertices are binary vectors of length \(3\) and they are connected via a single edge if and only if they differ in exactly one coordinate.</p>
 
 <h2 id="a-graph-theoretic-guessing-strategy">A Graph Theoretic Guessing Strategy</h2>
 
-<p>Here is our graph theoretic guessing strategy: Let <script type="math/tex">R</script> be a small resolving set for <script type="math/tex">H(n)</script>. Submit each <script type="math/tex">\vec{r} \in R</script> as a guess to Kaggle which sends back its score <script type="math/tex">s(\vec{r})</script>. If <script type="math/tex">s(\vec{r}) = n</script> for some <script type="math/tex">\vec{r}</script>, we’ve achieved a perfect score and are done with this competition. Otherwise, since <script type="math/tex">R</script> is a resolving set, there is a unique vertex <script type="math/tex">\vec{g}</script> in <script type="math/tex">H(n)</script> such that</p>
+<p>Here is our graph theoretic guessing strategy: Let \(R\) be a small resolving set for \(H(n)\). Submit each \(\vec{r} \in R\) as a guess to Kaggle which sends back its score \(s(\vec{r})\). If \(s(\vec{r}) = n\) for some \(\vec{r}\), we’ve achieved a perfect score and are done with this competition. Otherwise, since \(R\) is a resolving set, there is a unique vertex \(\vec{g}\) in \(H(n)\) such that</p>
 
 <p>\[
 d_{H(n)}(\vec{g},\vec{r}) = n - s(\vec{r})
 \]</p>
 
-<p>for all <script type="math/tex">\vec{r} \in R</script>.</p>
+<p>for all \(\vec{r} \in R\).</p>
 
-<p>However, by the construction of <script type="math/tex">H(n)</script>, we have <script type="math/tex">d_{H(n)} (\vec{k},\vec{r}) = n - s(\vec{r})</script> (where <script type="math/tex">\vec{k}</script> is Kaggle’s secret solution vector) for all <script type="math/tex">\vec{r} \in R</script>.</p>
+<p>However, by the construction of \(H(n)\), we have \(d_{H(n)} (\vec{k},\vec{r}) = n - s(\vec{r})\) (where \(\vec{k}\) is Kaggle’s secret solution vector) for all \(\vec{r} \in R\).</p>
 
-<p>Since <script type="math/tex">\vec{g}</script> is the <em>unique</em> vector with this property, we must have that <script type="math/tex">\vec{g} = \vec{k}</script> is the desired solution. This strategy therefore guarantees a perfect score in at most <script type="math/tex">\mathrm{size(R)} + 1</script> many submissions!</p>
+<p>Since \(\vec{g}\) is the <em>unique</em> vector with this property, we must have that \(\vec{g} = \vec{k}\) is the desired solution. This strategy therefore guarantees a perfect score in at most \(\mathrm{size(R)} + 1\) many submissions!</p>
 
-<p>Now, because <script type="math/tex">H(n)</script> has a metric dimension of <script type="math/tex">\frac{(2+ o(1))n}{\log_2(n)}</script>, we will be able to crack the Titanic dataset in <script type="math/tex">\sim 97</script> <sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup> submissions and furthermore, if we commit to submitting all but the final guess at once, this is known to be an optimal guessing strategy.</p>
+<p>Now, because \(H(n)\) has a metric dimension of \(\frac{(2+ o(1))n}{\log_2(n)}\), we will be able to crack the Titanic dataset in \(\sim 97\) <sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote">3</a></sup> submissions and furthermore, if we commit to submitting all but the final guess at once, this is known to be an optimal guessing strategy.</p>
 
 <h2 id="confessions">Confessions</h2>
 
-<p>While this graph theoretic approach to beat Kaggle, from a purely mathematical point of view, is very pleasing, it doesn’t seem that practical after all. For instance, while the metric dimension of <script type="math/tex">H(n)</script> is known asymptotically, <a href="https://mathoverflow.net/questions/332434/explicit-small-resolving-sets-for-hamming-graphs">it’s not clear to me how to find small resolving sets for <script type="math/tex">H(n)</script> in practice</a>. Furthermore, even if you were given a small resolving set <script type="math/tex">R</script>, calculating <script type="math/tex">\vec{k}</script> from <script type="math/tex">\{ d_{H(n)}(\vec{k}, \vec{r}) \mid \vec{r} \in R \}</script> requires some serious computational power. Granted, it doesn’t increase the number of guesses required, the metric I’ve chosen to optimize for, but it still results in so much computational overhead that the naive approach will win out.</p>
+<p>While this graph theoretic approach to beat Kaggle, from a purely mathematical point of view, is very pleasing, it doesn’t seem that practical after all. For instance, while the metric dimension of \(H(n)\) is known asymptotically, <a href="https://mathoverflow.net/questions/332434/explicit-small-resolving-sets-for-hamming-graphs">it’s not clear to me how to find small resolving sets for \(H(n)\) in practice</a>. Furthermore, even if you were given a small resolving set \(R\), calculating \(\vec{k}\) from \(\{ d_{H(n)}(\vec{k}, \vec{r}) \mid \vec{r} \in R \}\) requires some serious computational power. Granted, it doesn’t increase the number of guesses required, the metric I’ve chosen to optimize for, but it still results in so much computational overhead that the naive approach will win out.</p>
 
 <p>What’s worse: We are not taking full advantage of Kaggle’s feedback to our guesses. When guessing the entries of our resolving set one by one, we don’t use the information gained to guide our future guesses. Instead we could just as well have submitted them all in one go, collect the scores and then compute the correct solution. If we add this further restriction, the solution presented here is optimal. However, without this artificial restriction, I suspect that a better performing, general solution should be possible and I’d very much like to find one.</p>
 
@@ -101,8 +101,8 @@ d_{H(n)}(\vec{g},\vec{r}) = n - s(\vec{r})
 <h2 id="sources">Sources</h2>
 
 <ul>
-  <li><a href="https://mathoverflow.net/questions/58600">Math Overflow. Guessing a subset of <script type="math/tex">\{1, \ldots, N \}</script></a></li>
-  <li><a href="https://epubs.siam.org/doi/pdf/10.1137/1.9781611975482.74">Jian, Polyanskii. How to guess an <script type="math/tex">n</script>-digit number</a></li>
+  <li><a href="https://mathoverflow.net/questions/58600">Math Overflow. Guessing a subset of \(\{1, \ldots, N \}\)</a></li>
+  <li><a href="https://epubs.siam.org/doi/pdf/10.1137/1.9781611975482.74">Jian, Polyanskii. How to guess an \(n\)-digit number</a></li>
   <li><a href="https://arxiv.org/pdf/1712.02723.pdf">Jian, Polyanksii. On the metric dimension of Cartesian powers of a graph</a></li>
   <li><a href="https://arxiv.org/pdf/math/0507527.pdf">Caceres, Puertas. ON THE METRIC DIMENSION OFCARTESIAN PRODUCTS OF GRAPHS</a></li>
   <li><a href="https://arxiv.org/pdf/math/0507527.pdf">Caceres, Hernando, Mora, Pelayo, Puertas, Seara and Wood. ON THE METRIC DIMENSION OF CARTESIAN PRODUCTS OF GRAPHS</a></li>
@@ -110,16 +110,16 @@ d_{H(n)}(\vec{g},\vec{r}) = n - s(\vec{r})
   <li><a href="https://mathoverflow.net/questions/332434/explicit-small-resolving-sets-for-hamming-graphs">Math Overflow. Explicit, small resolving sets for Hamming graphs</a></li>
 </ul>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
-      <p>Kaggle’s daily submission limit poses only the tiniest of hurdles to any programmer… <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:1" role="doc-endnote">
+      <p>Kaggle’s daily submission limit poses only the tiniest of hurdles to any programmer… <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2">
-      <p><script type="math/tex">d_G</script> is the usual <a href="https://en.wikipedia.org/wiki/Distance_(graph_theory)">graph metric</a> <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:2" role="doc-endnote">
+      <p>\(d_G\) is the usual <a href="https://en.wikipedia.org/wiki/Distance_(graph_theory)">graph metric</a> <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:3">
-      <p>The exact number depends on the precise metric dimension of <script type="math/tex">H(418)</script> which I do not yet know at the time of writing this post. All I know for certain is that it is <script type="math/tex">\le 418</script>. <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:3" role="doc-endnote">
+      <p>The exact number depends on the precise metric dimension of \(H(418)\) which I do not yet know at the time of writing this post. All I know for certain is that it is \(\le 418\). <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

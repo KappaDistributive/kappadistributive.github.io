@@ -1,4 +1,4 @@
-I"�'<p>Full disclosure: I’m not a big fan of one-dimensional metrics when evaluating <a href="https://en.wikipedia.org/wiki/Binary_classification">(binary) classifiers</a>
+I"*'<p>Full disclosure: I’m not a big fan of one-dimensional metrics when evaluating <a href="https://en.wikipedia.org/wiki/Binary_classification">(binary) classifiers</a>
 (e.g. a neural network that is supposed to distinguish pictures of cats and dogs). In my opinion, a <a href="https://en.wikipedia.org/wiki/Confusion_matrix">confusion matrix</a> is, in almost all instances, preferable for data scientists. However, that doesn’t mean there aren’t good reasons to use one-dimensional performance metrics:</p>
 
 <ul>
@@ -13,7 +13,7 @@
 <ul>
   <li>Their actual expressive power often isn’t clear,</li>
   <li>It’s remarkably common for people to chase metrics that don’t align with their goals,</li>
-  <li>The terminology can be misleading <sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> and</li>
+  <li>The terminology can be misleading <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote">1</a></sup> and</li>
   <li>Choosing a metric is often less a result of careful consideration than a symptom of <a href="https://en.wikipedia.org/wiki/Information_bias_(psychology)">information bias</a> or high <a href="https://en.wikipedia.org/wiki/Uncertainty_avoidance">uncertainty avoidance</a>.</li>
 </ul>
 
@@ -65,11 +65,11 @@
 \mathrm{ACC} = \frac{\mathrm{TP} + \mathrm{TN}}{\mathrm{P} + \mathrm{N}}
 \]</p>
 
-<p>but what does it mean? Well, it’s the ratio of all instances that have been labelled correctly by our classifier. As such is serves as a good default performance metric for many tasks – especially if the test set is balanced (i.e. <script type="math/tex">\mathrm{P}</script> and <script type="math/tex">\mathrm{N}</script> are of similar size) and consists of groups of roughly equal importance to your task.</p>
+<p>but what does it mean? Well, it’s the ratio of all instances that have been labelled correctly by our classifier. As such is serves as a good default performance metric for many tasks – especially if the test set is balanced (i.e. \(\mathrm{P}\) and \(\mathrm{N}\) are of similar size) and consists of groups of roughly equal importance to your task.</p>
 
-<p>The accuracy of CS8k is <script type="math/tex">\frac{283+527}{400 + 600} = 0.81 = 81 \%</script>.</p>
+<p>The accuracy of CS8k is \(\frac{283+527}{400 + 600} = 0.81 = 81 \%\).</p>
 
-<p>Let’s consider an example in which accuracy is a terrible metric: Suppose you decide to build a model that tries to detect breast cancer in women from their X-ray images. Your dataset consists of 100.000 randomly selected images and, as such, only contains 85 Positives. By always guessing ‘not breast cancer’, your classifier will achieve an accuracy of <script type="math/tex">\frac{0 + 99.015}{100000} = 99.015\%</script>. And despite this impressive performance metric, you hopefully agree with me that this is an absolutely terrible model.</p>
+<p>Let’s consider an example in which accuracy is a terrible metric: Suppose you decide to build a model that tries to detect breast cancer in women from their X-ray images. Your dataset consists of 100.000 randomly selected images and, as such, only contains 85 Positives. By always guessing ‘not breast cancer’, your classifier will achieve an accuracy of \(\frac{0 + 99.015}{100000} = 99.015\%\). And despite this impressive performance metric, you hopefully agree with me that this is an absolutely terrible model.</p>
 
 <h2 id="recall">Recall</h2>
 
@@ -79,9 +79,9 @@
 \mathrm{TPR} = \frac{\mathrm{TP}}{P}
 \]</p>
 
-<p>and hence turns out to be a whopping <script type="math/tex">\frac{0}{85} = 0\%</script> – truly awful!</p>
+<p>and hence turns out to be a whopping \(\frac{0}{85} = 0\%\) – truly awful!</p>
 
-<p>Recall measures how many of the Positives got detected as such <em>and only that</em>. While it can be a highly relevant piece of information, it is not suitable as your single performance metric. By blindly guessing ‘Positive’, your model will always have a Recall of <script type="math/tex">100\%</script>.</p>
+<p>Recall measures how many of the Positives got detected as such <em>and only that</em>. While it can be a highly relevant piece of information, it is not suitable as your single performance metric. By blindly guessing ‘Positive’, your model will always have a Recall of \(100\%\).</p>
 
 <h2 id="precision">Precision</h2>
 
@@ -91,7 +91,7 @@
 \mathrm{PPV} = \frac{\mathrm{TP}}{\mathrm{TP} + \mathrm{FP}}
 \]</p>
 
-<p>Since <script type="math/tex">\mathrm{FP} = 0</script> for our breast cancer classifier, it has perfect precision – demonstrating that precision alone also isn’t suitable as a performance metric.</p>
+<p>Since \(\mathrm{FP} = 0\) for our breast cancer classifier, it has perfect precision – demonstrating that precision alone also isn’t suitable as a performance metric.</p>
 
 <h2 id="f1-score">F1 Score</h2>
 
@@ -101,11 +101,11 @@
 \mathrm{F1} = \frac{2}{\frac{1}{\mathrm{TPR}} + \frac{1}{\mathrm{PPV}}} = \frac{2 \cdot \mathrm{TP}}{2 \cdot \mathrm{TP} + \mathrm{FP} + \mathrm{FN}}.
 \]</p>
 
-<p>In order to achieve a high F1-Score, your model must achieve both high Recall and Precision <sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>. Not only that, because of the usage of the harmonic mean, a terrible score in either metric will destroy the F1-Score. In particular, our breast cancer classifier, despite having perfect precision, has an F1-Score of <script type="math/tex">\frac{2 \cdot 0}{ 2 \cdot 0 + 0 + 85} = 0</script>.</p>
+<p>In order to achieve a high F1-Score, your model must achieve both high Recall and Precision <sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote">2</a></sup>. Not only that, because of the usage of the harmonic mean, a terrible score in either metric will destroy the F1-Score. In particular, our breast cancer classifier, despite having perfect precision, has an F1-Score of \(\frac{2 \cdot 0}{ 2 \cdot 0 + 0 + 85} = 0\).</p>
 
 <p>If your task demands a balance of Recall and Precision (which typically require trade-offs), the F1-Score is a decent choice. However, it’s not a silver bullet for your performance metric needs either:</p>
 
-<p>Consider the following scenario: We keep everything as before but flip the labels in our breast cancer example. So the breast cancer instances are now our Negatives and the non-breast cancer instances are now our Positives. Having changed nothing about the quality of our model, this now results in an F1-Score of <script type="math/tex">\frac{2 \cdot 99.015}{2 \cdot 99.0815 + 85 + 0 } \sim 0.9996</script> – a nearly perfect score.</p>
+<p>Consider the following scenario: We keep everything as before but flip the labels in our breast cancer example. So the breast cancer instances are now our Negatives and the non-breast cancer instances are now our Positives. Having changed nothing about the quality of our model, this now results in an F1-Score of \(\frac{2 \cdot 99.015}{2 \cdot 99.0815 + 85 + 0 } \sim 0.9996\) – a nearly perfect score.</p>
 
 <p>There are other issues with these and every other one-dimensional performance metric but I think I’ve already demanded too much of your attention for now. So let’s reserve further criticism for another time…</p>
 
@@ -115,13 +115,13 @@
 
 <p>In fact, I’d go as far as to say that the default for data science practitioners should be to <em>not consider any one-dimensional metric</em> and instead analyse confusion matrices. They are, without a doubt, less convenient but that actually turns out to be their strength: Being forced to carefully thing through a confusion matrix will save your from making many mistakes that looking at a single, poorly chosen performance metric alone would have nudged you to commit.</p>
 
-<div class="footnotes">
+<div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1">
-      <p>Metrics tend to have names that we attach some intuitive meaning to (like ‘accuracy’) that doesn’t always align with the technical definition. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:1" role="doc-endnote">
+      <p>Metrics tend to have names that we attach some intuitive meaning to (like ‘accuracy’) that doesn’t always align with the technical definition. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
-    <li id="fn:2">
-      <p>Not that, although the F1-Score takes only values between 0 and 1, people don’t often view the F1-Score as a percentage. And there are good reasons for that, that I won’t get into here. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    <li id="fn:2" role="doc-endnote">
+      <p>Not that, although the F1-Score takes only values between 0 and 1, people don’t often view the F1-Score as a percentage. And there are good reasons for that, that I won’t get into here. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

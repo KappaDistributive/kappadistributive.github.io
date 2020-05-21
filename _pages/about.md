@@ -5,8 +5,5 @@ title: "About Me"
 author_profile: true
 ---
 
-I am currently a third year PhD student in Mathematics at the University M&uuml;nster.
-
-Apart from Inner Model Theory, the subject of my PhD studies, I am fascinated by Data Science and Machine Learning.
-
-You can find my old website [here](https://www.old.stefanmesken.info).
+Stefan Mesken is a mathematician and data scientist who accidentally fell
+in love with deep learning and its applications in NLP.
