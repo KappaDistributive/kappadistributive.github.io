@@ -9,28 +9,28 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Python Tricks For Data Scientist - Stefan Mesken</title>
-<meta name="description" content="Recently, I’ve found myself gravitating toward a small set of ‘tricks’ inPython over and over again and thought it would be fun to share and discussa few of them with other data scientists. So here they go:">
+<!-- begin _includes/seo.html --><title>Python Tricks - Stefan Mesken</title>
+<meta name="description" content="\documentclass{article}">
 
 
 
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Stefan Mesken">
-<meta property="og:title" content="Python Tricks For Data Scientist">
-<meta property="og:url" content="http://localhost:4000/data-science/python-tricks.md/">
+<meta property="og:title" content="Python Tricks">
+<meta property="og:url" content="http://localhost:4000/python-tricks/">
 
 
-  <meta property="og:description" content="Recently, I’ve found myself gravitating toward a small set of ‘tricks’ inPython over and over again and thought it would be fun to share and discussa few of them with other data scientists. So here they go:">
+  <meta property="og:description" content="\documentclass{article}">
 
 
 
 
 
   <meta name="twitter:site" content="@mesken_stefan">
-  <meta name="twitter:title" content="Python Tricks For Data Scientist">
-  <meta name="twitter:description" content="Recently, I’ve found myself gravitating toward a small set of ‘tricks’ inPython over and over again and thought it would be fun to share and discussa few of them with other data scientists. So here they go:">
-  <meta name="twitter:url" content="http://localhost:4000/data-science/python-tricks.md/">
+  <meta name="twitter:title" content="Python Tricks">
+  <meta name="twitter:description" content="\documentclass{article}">
+  <meta name="twitter:url" content="http://localhost:4000/python-tricks/">
 
   
     <meta name="twitter:card" content="summary">
@@ -52,7 +52,7 @@
   
 
 
-<link rel="canonical" href="http://localhost:4000/data-science/python-tricks.md/">
+<link rel="canonical" href="http://localhost:4000/python-tricks/">
 
 
 
@@ -84,13 +84,22 @@
 <!-- Twitter cards -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@mesken_stefan">
-<meta name="twitter:title" content="Python Tricks For Data Scientist">
+<meta name="twitter:title" content="Python Tricks">
 
 
   <meta name="twitter:description"
-    content="Recently, I've found myself gravitating toward a small set of 'tricks' in
-Python over and over again and thought it would be fun to share and discuss
-a few of them with other data scientists. So he...">
+    content="\documentclass{article}
+
+% Packages required to support encoding
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+
+% Packages required by code
+
+
+% Packages always used
+\usepackage{hyperref}
+\usepackag...">
 
 
 
@@ -315,15 +324,15 @@ a few of them with other data scientists. So he...">
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Python Tricks For Data Scientist">
-    <meta itemprop="description" content="Recently, I’ve found myself gravitating toward a small set of ‘tricks’ inPython over and over again and thought it would be fun to share and discussa few of them with other data scientists. So here they go:">
+    <meta itemprop="headline" content="Python Tricks">
+    <meta itemprop="description" content="\documentclass{article}">
     <meta itemprop="datePublished" content="May 21, 2020">
     
 
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Python Tricks For Data Scientist
+          <h1 id="page-title" class="page__title" itemprop="headline">Python Tricks
 </h1>
           
             <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
@@ -339,142 +348,95 @@ a few of them with other data scientists. So he...">
 
       <section class="page__content" itemprop="text">
         
-        Recently, I've found myself gravitating toward a small set of 'tricks' in
-Python over and over again and thought it would be fun to share and discuss
-a few of them with other data scientists. So here they go:
+        \documentclass{article}
 
-## Cached Data Loader 
+% Packages required to support encoding
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
 
-Jupyter notebooks are great for exploratory data analysis for many reasons.
-One major of which is their persistent state between code execution: You
-can load your data once and then iteratively perform all sorts of
-modifications / visualizations without having to reload your data over the
-network.
+% Packages required by code
 
-Sometimes, however, that's still not enough: If your network connection is
-slow or the dataset you're trying to analyze particular large or you need
-to restart your kernel frequently for whatever reason, data loading can
-become a real pain.
 
-To this, I've found myself using cached data loading more and more frequently
-in recent times. Here's how this may look like in practice:
+% Packages always used
+\usepackage{hyperref}
+\usepackage{xspace}
+\usepackage[usenames,dvipsnames]{color}
+\hypersetup{colorlinks=true,urlcolor=blue}
 
-```python
-def _cached_data_loader(
-    connector: StorageConnector,
-    query: str,
-    query_parameters: List[QueryParameter],
-    cache_location: Path,
-    force_update: bool, 
-) -> pandas.DataFrame:
-    if force_update or not os.path.isfile(cache_location):
-        data = connector.query_to_dataframe(
-            query,
-            query_parameters
-        )
-        data.to_pickle(cache_location)
-    else:
-        data = pd.from_pickle(cache_location)
 
-    return data
-    
-def load_marketing_data(
-    query_parameters: List[QueryParameter] = [],
-    cache_location: Path = Path("cache/marketing.pkl"),
-    force_update: bool = False
-) -> pandas.DataFrame:
-    connector = ...
-    query = "..."
-    return = _cached_data_loader(
-        connector,
-        query,
-        query_parameters,
-        cache_location,
-        force_update
-    )
-```
 
-After downloading marketing data over the network, any subsequent call to this
-function will load a cached version from disk instead. However, by setting
-`force_update = True` you can still refresh your (cached) data at any time.
+\begin{document}
 
-This can probably be implemented much more elegantly as a decorator. And if you
-do, I'd love to hear about it!
+\vspace{.5em} \hrule \vspace{.5em}
+title: Python Tricks For Data Scientist layout: single mathjax: true category: Data-Science
 
-## Debugging with Upturn
+\hypertarget{tags_data_science_python}{}\subsection*\label{tags_data_science_python}
 
-Since many bugs in data science code only occur on certain input data, debugging
-can be challenging and simple debugging tools often seem too restrictive,
-whereas more feature complete debugging tools can be intimidating. What I've found
-to be useful at times is to abuse IPython as a debugger.
-Say, for instance, that a certain pre-processing step in my data pipeline yields
-unexpected results. Instead of setting a breakpoint and attempting to understand
-what's going on with a debugger, I might add something like this:
+Recently, I've found myself gravitating toward a small set of `tricks' in Python over and over again and thought it would be fun to share and discuss a few of them with other data scientists. So here they go:
 
-```python
-def preprocessing(raw_data: pd.DataFrame) -> np.ndarray:
-    ...
-    buggy code
-    ...
+\hypertarget{cached_data_loader}{}\subsection*\label{cached_data_loader}
 
-    import IPython
-    IPython.embed()
-    exit(1)
+Jupyter notebooks are great for exploratory data analysis for many reasons. One major of which is their persistent state between code execution: You can load your data once and then iteratively perform all sorts of modifications / visualizations without having to reload your data over the network.
 
-    ...
-    return data
-```
+Sometimes, however, that's still not enough: If your network connection is slow or the dataset you're trying to analyze particular large or you need to restart your kernel frequently for whatever reason, data loading can become a real pain.
 
-When reaching `IPython.embed()`, this opens an interactive Python session in
-the terminal that allows me to inspect all relevant variables, execute
-arbitrary code, experiment with possible solutions, ... When you're done, 
-simply exit IPython which will then also exit the program in the following line.
+To this, I've found myself using cached data loading more and more frequently in recent times. Here's how this may look like in practice:
 
-## Diffing and Merging Jupyter Notebooks
+``thon def \emph{cached}data\_loader( connector: StorageConnector, query: str, query\_parameters: ListQueryParameter, cache\_location: Path, force\_update: bool, ) -{\tt \symbol{62}} pandas.DataFrame: if force\_update or not os.path.isfile(cache\_location): data = connector.query\_to\_dataframe( query, query\_parameters ) data.to\_pickle(cache\_location) else: data = pd.from\_pickle(cache\_location)
 
-Working in close collaboration on challenging problems is easily my favorite
-aspect of being a data scientist. Resolving merge conflicts in Jupyter
-notebooks, however, that close collaboration inevitably leads to, has been a
-rather dreadful experience for me. That is, until I found 
-[nbdime](https://github.com/jupyter/nbdime). It's a super handy tool to diff
-and merge Jupyter notebooks in your terminal or via their web-based GUI. 
+\begin{verbatim}return data\end{verbatim}
+def load\_marketing\_data( query\_parameters: ListQueryParameter = , cache\_location: Path = Path(``cache/marketing.pkl''), force\_update: bool = False ) -{\tt \symbol{62}} pandas.DataFrame: connector = \ldots{} query = ``\ldots{}'' return = \emph{cached}data\_loader( connector, query, query\_parameters, cache\_location, force\_update )
 
-<img src="/images/diagrams/nbmerge-web.png" alt="merging notebooks with nbdime"/>
+``
 
-## Speeding Up BigQuery
+After downloading marketing data over the network, any subsequent call to this function will load a cached version from disk instead. However, by setting {\colorbox[rgb]{1.00,0.93,1.00}{\tt force\char95update\char32\char61\char32True}} you can still refresh your (cached) data at any time.
 
-Transforming large amounts of data from 
-[BigQuery](https://cloud.google.com/bigquery) to Pandas DataFrames, even from
-within Google's Compute Engine, can be incredibly slow. Fortunately, Google 
-offers an alternative that I've personally experienced to shorten load times
-by two orders of magnitute -- BigQuery's Storage API.
-Here's how to use it (assuming that this API has been enabled in your project 
-and your service account has permissions to use it):
+This can probably be implemented much more elegantly as a decorator. And if you do, I'd love to hear about it!
 
-```python
-from google.cloud import bigquery, bigquery_storagev1beta1
+\hypertarget{debugging_with_upturn}{}\subsection*\label{debugging_with_upturn}
 
-credentials, project_id = ...
+Since many bugs in data science code only occur on certain input data, debugging can be challenging and simple debugging tools often seem too restrictive, whereas more feature complete debugging tools can be intimidating. What I've found to be useful at times is to abuse IPython as a debugger. Say, for instance, that a certain pre-processing step in my data pipeline yields unexpected results. Instead of setting a breakpoint and attempting to understand what's going on with a debugger, I might add something like this:
 
-bq_client = bigquery.Client(
-    credentials=credentials,
-    project=project_id
-)
+``thon def preprocessing(raw\_data: pd.DataFrame) -{\tt \symbol{62}} np.ndarray: \ldots{} buggy code \ldots{}
 
-bq_storage_client = bigquery_storagev1beta1.BigQueryStorageClient(
-    credentials=credentials
-)
+\begin{verbatim}import IPython
+IPython.embed()
+exit(1)
 
-query = "..."
+...
+return data\end{verbatim}
+``
 
-data = (
-    bq_client.query(query)
-    .result()
-    .to_dataframe(bq_storage_client=bq_storage_client)
-)
-```
+When reaching {\colorbox[rgb]{1.00,0.93,1.00}{\tt IPython\char46embed\char40\char41}}, this opens an interactive Python session in the terminal that allows me to inspect all relevant variables, execute arbitrary code, experiment with possible solutions, \ldots{} When you're done, simply exit IPython which will then also exit the program in the following line.
+
+\hypertarget{diffing_and_merging_jupyter_notebooks}{}\subsection*\label{diffing_and_merging_jupyter_notebooks}
+
+Working in close collaboration on challenging problems is easily my favorite aspect of being a data scientist. Resolving merge conflicts in Jupyter notebooks, however, that close collaboration inevitably leads to, has been a rather dreadful experience for me. That is, until I found \href{https://github.com/jupyter/nbdime}{nbdime}. It's a super handy tool to diff and merge Jupyter notebooks in your terminal or via their web-based GUI.
+
+
+
+\hypertarget{speeding_up_bigquery}{}\subsection*\label{speeding_up_bigquery}
+
+Transforming large amounts of data from \href{https://cloud.google.com/bigquery}{BigQuery} to Pandas DataFrames, even from within Google's Compute Engine, can be incredibly slow. Fortunately, Google offers an alternative that I've personally experienced to shorten load times by two orders of magnitude -- BigQuery's Storage API. Here's how to use it (assuming that this API has been enabled in your project and your service account has permissions to use it):
+
+``thon from google.cloud import bigquery, bigquery\_storagev1beta1
+
+credentials, project\_id = \ldots{}
+
+bq\_client = bigquery.Client( credentials=credentials, project=project\_id )
+
+bq\_storage\_client = bigquery\_storagev1beta1.BigQueryStorageClient( credentials=credentials )
+
+query = ``\ldots{}''
+
+data = ( bq\_client.query(query) .result() .to\_dataframe(bq\_storage\_client=bq\_storage\_client) )
+
+``
 
 Keep in mind, however, that this will result in additional costs.
+
+
+\end{document}
 
         
       </section>
@@ -482,48 +444,6 @@ Keep in mind, however, that this will result in additional costs.
       <footer class="page__meta">
         
         
-  
-
-
-  
-  
-  
-
-  <p class="page__taxonomy">
-    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
-    <span itemprop="keywords">
-    
-      
-      
-      <a href="/tags/#data-science" class="page__taxonomy-item" rel="tag">data science</a><span class="sep">, </span>
-    
-      
-      
-      <a href="/tags/#python" class="page__taxonomy-item" rel="tag">python</a>
-    
-    </span>
-  </p>
-
-
-
-
-  
-
-
-  
-  
-  
-
-  <p class="page__taxonomy">
-    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
-    <span itemprop="keywords">
-    
-      
-      
-      <a href="/categories/#data-science" class="page__taxonomy-item" rel="tag">Data-Science</a>
-    
-    </span>
-  </p>
 
 
         
@@ -536,23 +456,22 @@ Keep in mind, however, that this will result in additional costs.
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?via=mesken_stefan&text=Python+Tricks+For+Data+Scientist%20http%3A%2F%2Flocalhost%3A4000%2Fdata-science%2Fpython-tricks.md%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?via=mesken_stefan&text=Python+Tricks%20http%3A%2F%2Flocalhost%3A4000%2Fpython-tricks%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fdata-science%2Fpython-tricks.md%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fpython-tricks%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fdata-science%2Fpython-tricks.md%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fpython-tricks%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/data-science/python-tricks/" class="pagination--pager" title="Python Tricks For Data Scientist
+      <a href="/data-science/python-tricks.md/" class="pagination--pager" title="Python Tricks For Data Scientist
 ">Previous</a>
     
     
-      <a href="/python-tricks/" class="pagination--pager" title="Python Tricks
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -576,7 +495,7 @@ Keep in mind, however, that this will result in additional costs.
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/python-tricks/" rel="permalink">Python Tricks
+        <a href="/data-science/python-tricks.md/" rel="permalink">Python Tricks For Data Scientist
 </a>
       
     </h2>
@@ -589,8 +508,9 @@ Keep in mind, however, that this will result in additional costs.
   3 minute read
 </p>
     
-    <p class="archive__item-excerpt" itemprop="description">\documentclass{article}
-</p>
+    <p class="archive__item-excerpt" itemprop="description">Recently, I’ve found myself gravitating toward a small set of ‘tricks’ in
+Python over and over again and thought it would be fun to share and discuss
+a few o...</p>
   </article>
 </div>
 
@@ -737,10 +657,6 @@ a few o...</p>
 
 
 
-
-<script type="text/javascript" async
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
 
 
 

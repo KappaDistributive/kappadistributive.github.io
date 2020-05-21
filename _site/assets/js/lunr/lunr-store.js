@@ -33,4 +33,9 @@ var store = [{
         "excerpt":"Recently, I've found myself gravitating toward a small set of 'tricks' in Python over and over again and thought it would be fun to share and discuss a few of them with other data scientists. So here they go: ## Cached Data Loader Jupyter notebooks are great for exploratory data...","categories": ["Data-Science"],
         "tags": ["data science","python"],
         "url": "http://localhost:4000/data-science/python-tricks.md/",
+        "teaser":null},{
+        "title": "Python Tricks",
+        "excerpt":"\\documentclass{article} % Packages required to support encoding \\usepackage{ucs} \\usepackage[utf8x]{inputenc} % Packages required by code % Packages always used \\usepackage{hyperref} \\usepackage{xspace} \\usepackage[usenames,dvipsnames]{color} \\hypersetup{colorlinks=true,urlcolor=blue} \\begin{document} \\vspace{.5em} \\hrule \\vspace{.5em} title: Python Tricks For Data Scientist layout: single mathjax: true category: Data-Science \\hypertarget{tags_data_science_python}{}\\subsection*\\label{tags_data_science_python} Recently, I've found myself gravitating toward a small set of `tricks'...","categories": [],
+        "tags": [],
+        "url": "http://localhost:4000/python-tricks/",
         "teaser":null}]

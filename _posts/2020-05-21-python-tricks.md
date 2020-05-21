@@ -22,8 +22,9 @@ slow or the dataset you're trying to analyze particular large or you need
 to restart your kernel frequently for whatever reason, data loading can
 become a real pain.
 
-To this, I've found myself using cached data loading more and more frequently
-in recent times. Here's how this may look like in practice:
+To cope with this, especially now that I'm working remotely on a slow
+internet connection, I've found myself using cached data loading more 
+frequently. Here's how this may look like in practice:
 
 ```python
 def _cached_data_loader(
